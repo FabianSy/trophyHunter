@@ -1,31 +1,27 @@
-// document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("deviceready", onDeviceReady, false);
 
-// // Cordova is ready
-// //
-// function onDeviceReady() {
-	// alert("starting");
-	// startWatch();
-// }
+// Phonegap is ready
+function onDeviceReady() {
+	startWatch();
+}
 
-// function startWatch() {  	
-	// // Update compass every 3 seconds
-    // var options = { frequency: 3000 };	
-	// var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
-// });
+var watchID;
 
-function btnClick(){
-	document.getElementById("result").innerHTML="btnClick";
-	navigator.compass.getCurrentHeading(updateArrow, onError);
+function startWatch() {  	
+	// Update compass every 3 seconds
+    var options = { frequency: 3000 };	
+	watchID = navigator.compass.watchHeading(updateArrow, onError, options)
+});
+
+function stopWatch(){
+	navigator.compass.clearWatch(watchID);
 }
 
 function updateArrow(heading) {
-	document.getElementById("result").innerHTML="updateArrow";
-	var brng = computeBearing();
-	document.getElementById("result").innerHTML="bearing computed";
+	var bearing = computeBearing();
 	var direction = heading.magneticHeading - bearing;
-	document.getElementById("result").innerHTML="direction: " + direction;
-	//$('#result').html('Bearing: ' + brng + ' deg</br>Heading: ' + heading + ' deg');
-	//$('#arrow').rotate(brng);
+	$('#result').html('Bearing: ' + bearing + ' deg</br>Heading: ' + heading + ' deg');
+	$('#arrow').rotate(direction);
 }
 
 // onError: Failed to get the heading
