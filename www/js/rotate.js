@@ -1,6 +1,26 @@
 jQuery(window).ready(function(){  
 	jQuery('#btnBearing').click(computeBearing);
+	
+	// Update compass every 3 seconds
+    var options = { frequency: 3000 };
+
+	
+	var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
 });
+
+function updateArrow(heading) {
+	brng = computeBearing();
+	direction = heading - bearing;
+	$('#result').html('Bearing: ' + brng + ' deg</br>Heading: ' + heading + ' deg');
+	$('#arrow').rotate(brng);
+}
+
+// onError: Failed to get the heading
+//
+function onError(compassError) {
+	alert('Compass error: ' + compassError.code);
+}
+
 
 Number.prototype.toRad = function() {
    return this * Math.PI / 180;
@@ -23,7 +43,5 @@ var y = Math.sin(dLon) * Math.cos(lat2);
 var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
 var brng = Math.atan2(y, x).toDeg();
 
-$('#result').html('Bearing: ' + brng + ' deg');
-$('#arrow').rotate(brng);
-
+return brng;
 }
