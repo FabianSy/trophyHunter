@@ -1,20 +1,27 @@
-document.addEventListener("deviceready", onDeviceReady, false);
+// document.addEventListener("deviceready", onDeviceReady, false);
 
-// Cordova is ready
-//
-function onDeviceReady() {
-	alert("starting");
-	startWatch();
+// // Cordova is ready
+// //
+// function onDeviceReady() {
+	// alert("starting");
+	// startWatch();
+// }
+
+// function startWatch() {  	
+	// // Update compass every 3 seconds
+    // var options = { frequency: 3000 };	
+	// var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
+// });
+
+function btnClick(){
+	alert("btnClick");
+	navigator.compass.getCurrentHeading(updateArrow, onError);
 }
 
-function startWatch() {  	
-	// Update compass every 3 seconds
-    var options = { frequency: 3000 };	
-	var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
-});
-
 function updateArrow(heading) {
+	alert("updateArrow");
 	brng = computeBearing();
+	alert("bearing computed");
 	direction = heading - bearing;
 	alert(direction);
 	//$('#result').html('Bearing: ' + brng + ' deg</br>Heading: ' + heading + ' deg');
