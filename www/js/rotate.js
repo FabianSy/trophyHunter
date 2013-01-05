@@ -16,8 +16,9 @@ function startWatch() {
 function updateArrow(heading) {
 	brng = computeBearing();
 	direction = heading - bearing;
-	$('#result').html('Bearing: ' + brng + ' deg</br>Heading: ' + heading + ' deg');
-	$('#arrow').rotate(brng);
+	alert(direction);
+	//$('#result').html('Bearing: ' + brng + ' deg</br>Heading: ' + heading + ' deg');
+	//$('#arrow').rotate(brng);
 }
 
 // onError: Failed to get the heading
