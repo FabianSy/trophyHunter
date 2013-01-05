@@ -5,17 +5,11 @@ function onDeviceReady() {
 	startWatch();
 }
 
-var watchID;
-
 function startWatch() {  	
 	// Update compass every 3 seconds
     var options = { frequency: 3000 };	
-	watchID = navigator.compass.watchHeading(updateArrow, onError, options)
+	var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
 });
-
-function stopWatch(){
-	navigator.compass.clearWatch(watchID);
-}
 
 function updateArrow(heading) {
 	var bearing = computeBearing();
