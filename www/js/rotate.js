@@ -14,16 +14,16 @@
 // });
 
 function btnClick(){
-	alert("btnClick");
+	document.getElementById("result").innerHTML="btnClick";
 	navigator.compass.getCurrentHeading(updateArrow, onError);
 }
 
 function updateArrow(heading) {
-	alert("updateArrow");
+	document.getElementById("result").innerHTML="updateArrow";
 	brng = computeBearing();
-	alert("bearing computed");
+	document.getElementById("result").innerHTML="bearing computed";
 	direction = heading - bearing;
-	alert(direction);
+	document.getElementById("result").innerHTML="direction: " + direction;
 	//$('#result').html('Bearing: ' + brng + ' deg</br>Heading: ' + heading + ' deg');
 	//$('#arrow').rotate(brng);
 }
