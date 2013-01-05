@@ -1,10 +1,15 @@
-jQuery(window).ready(function(){  
-	jQuery('#btnBearing').click(computeBearing);
-	
-	// Update compass every 3 seconds
-    var options = { frequency: 3000 };
+document.addEventListener("deviceready", onDeviceReady, false);
 
-	
+// Cordova is ready
+//
+function onDeviceReady() {
+	alert("starting");
+	startWatch();
+}
+
+function startWatch() {  	
+	// Update compass every 3 seconds
+    var options = { frequency: 3000 };	
 	var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
 });
 
