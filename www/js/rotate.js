@@ -1,4 +1,4 @@
-//document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("deviceready", onDeviceReady, false);
 
 // Phonegap is ready
 function onDeviceReady() {
@@ -9,7 +9,7 @@ function startWatch() {
 	// Update compass every 3 seconds
     var options = { frequency: 3000 };	
 	var watchID = navigator.compass.watchHeading(updateArrow, onError, options)
-});
+}
 
 function updateArrow(heading) {
 	var bearing = computeBearing();
