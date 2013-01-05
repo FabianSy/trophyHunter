@@ -14,7 +14,7 @@ function startWatch() {
 function updateArrow(heading) {
 	var bearing = computeBearing();
 	var direction = heading.magneticHeading - bearing;
-	$('#result').html('Bearing: ' + bearing + ' deg</br>Heading: ' + heading + ' deg');
+	$('#result').html('Bearing: ' + bearing + ' deg</br>Heading: ' + heading.magneticHeading + ' deg');
 	$('#arrow').rotate(direction);
 }
 
