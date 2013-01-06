@@ -1,10 +1,7 @@
-document.addEventListener("deviceready", onDeviceReady, false);
-
-// Phonegap is ready
-function onDeviceReady() {
+$(document).ready(function(){
 	var json = JSON.parse(getAllQuests());
 	showQuests(json);
-}
+});
 
 function showQuests(json){
 	var questsArray = json.quest;
