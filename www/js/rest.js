@@ -1,142 +1,68 @@
-function simpleCreateQuest()
+function simpleCreateQuest(name, description, badgePath, latitude, longitude, radius)
 {
-	var name = document.getElementById("qName").value;
-	var description = document.getElementById("qDesc").value;
-	var badgePath = document.getElementById("bPath").value;
-	var latitude = document.getElementById("lLatitude").value;
-	var longitude = document.getElementById("lLongitude").value;
-	var radius = document.getElementById("lRadius").value;
 
-	xmlhttp=XMLHttpRequest();
-	if (xmlhttp==null)
-	{
-		alert ("Your browser does not support XMLHTTP!");
-		return;
-	}
+	var resource = "simpleCreateBasicQuest";
+	resource = resource + "?name=" + name;
+	resource = resource + "&description=" + description;
+	resource = resource + "&badgePath=" + badgePath;
+	resource = resource + "&latitude=" + latitude;
+	resource = resource + "&longitude=" + longitude;
+	resource = resource + "&radius=" + radius;
 
-	var url="http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080/TrophyHunterWebService/rest/simpleCreateBasicQuest";
-	url=url+"?name="+name;
-	url=url+"&description="+description;
-	url=url+"&badgePath="+badgePath;
-	url=url+"&latitude="+latitude;
-	url=url+"&longitude="+longitude;
-	url=url+"&radius="+radius;
-
-	xmlhttp.onreadystatechange=function()
-	{ 
-		if (xmlhttp.readyState==4)
-		{ 
-			document.getElementById("result").innerHTML="Quest created";
-		}
-	}
-	xmlhttp.open("POST",url,true);
-	xmlhttp.send(null);
 }
 
-function createBadge()
+function createBadge(badgeName, path)
 {
-	var badgeName = document.getElementById("bName").value;
-	var path = document.getElementById("bPath").value;
-
-	xmlhttp=XMLHttpRequest();
-	if (xmlhttp==null)
-	{
-		alert ("Your browser does not support XMLHTTP!");
-		return;
-	}
-
-	var url="http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080/TrophyHunterWebService/rest/createBadge";
-	url=url+"?name="+badgeName;
-	url=url+"&path="+path;
-
-	xmlhttp.onreadystatechange=function()
-	{ 
-		if (xmlhttp.readyState==4)
-		{ 
-			document.getElementById("result").innerHTML="Badge created";
-		}
-	}
-	xmlhttp.open("POST",url,true);
-	xmlhttp.send(null);
+	var resource = "createBadge";
+	resource = resource + "?name=" + badgeName;
+	resource = resource + "&path=" + path;
+	webservicePostRequest(resource);
 }
 
 function getAllQuests()
 {
-
-	xmlhttp=XMLHttpRequest();
-	if (xmlhttp==null)
-	{
-		alert ("Your browser does not support XMLHTTP!");
-		return;
-	}
-
-	var url="http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080/TrophyHunterWebService/rest/getAllQuests";
-
-	xmlhttp.onreadystatechange=function()
-	{ 
-		if (xmlhttp.readyState==4)
-		{ 
-			document.getElementById("result").innerHTML=xmlhttp.responseText;
-		}
-	}
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send(null);
+	var resource = "getAllQuests";
+	return webserviceGetRequest(resource);
 }
 
-function getBadgeByName()
+function getBadgeByName(badgeName)
 {
-	var badgeName = document.getElementById("bName").value;
-
-	xmlhttp=XMLHttpRequest();
-	if (xmlhttp==null)
-	{
-		alert ("Your browser does not support XMLHTTP!");
-		return;
-	}
-
-	var url="http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080/TrophyHunterWebService/rest/getBadgeByName";
-	url=url+"?name="+badgeName;
-
-	xmlhttp.onreadystatechange=function()
-	{ 
-		if (xmlhttp.readyState==4)
-		{ 
-			document.getElementById("result").innerHTML=xmlhttp.responseText;
-		}
-	}
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send(null);
+	var resource = "getBadgeByName?name="+badgeName;
+	return webserviceGetRequest(resource);
 }
 
-function getLocationByName()
+function getLocationByName(locationName)
 {
-	var locationName = document.getElementById("lName").value;
-
-	xmlhttp=XMLHttpRequest();
-	if (xmlhttp==null)
-	{
-		alert ("Your browser does not support XMLHTTP!");
-		return;
-	}
-
-	var url="http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080/TrophyHunterWebService/rest/getLocationByName";
-	url=url+"?name="+locationName;
-
-	xmlhttp.onreadystatechange=function()
-	{ 
-		if (xmlhttp.readyState==4)
-		{ 
-			document.getElementById("result").innerHTML=xmlhttp.responseText;
-		}
-	}
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send(null);
+	var resource = "getLocationByName?name="+locationName;
+	return webserviceGetRequest(resource);
 }
 
-function getQuestByName()
+function getQuestByName(questName)
 {
-	var questName = document.getElementById("qName").value;
+	var resource = "getQuestByName?name="+questName;
+	return webserviceGetRequest(resource);
+}
 
+function webserviceGetRequest(resource)
+{
+	xmlhttp= new XMLHttpRequest;
+	if (xmlhttp==null)
+	{
+		alert ("Your browser does not support XMLHTTP!");
+		return;
+	}
+	
+	var server = "http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080"
+	var webservice = "/TrophyHunterWebService/rest/";
+	var url = server + webservice + resource;
+
+	xmlhttp.open("GET",url,false);
+	xmlhttp.send(null);
+	return  xmlhttp.responseText;
+}
+
+function webservicePostRequest(resource)
+{
 	xmlhttp=XMLHttpRequest();
 	if (xmlhttp==null)
 	{
@@ -144,20 +70,10 @@ function getQuestByName()
 		return;
 	}
 
-	var url="http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080/TrophyHunterWebService/rest/getQuestByName";
-	url=url+"?name="+questName;
+	var server = "http://ec2-176-34-85-172.eu-west-1.compute.amazonaws.com:8080"
+	var webservice = "/TrophyHunterWebService/rest/";
+	var url = server + webservice + resource;
 
-	xmlhttp.onreadystatechange=function()
-	{ 
-		if (xmlhttp.readyState==4)
-		{ 
-			document.getElementById("result").innerHTML=xmlhttp.responseText;
-		}
-	}
-	xmlhttp.open("GET",url,true);
+	xmlhttp.open("POST",url,true);
 	xmlhttp.send(null);
-}
-
-function test(){
-	document.getElementById("result").innerHTML=document.getElementById("bName").value;
 }
