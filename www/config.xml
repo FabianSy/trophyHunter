@@ -23,6 +23,8 @@
 	<feature name="http://api.phonegap.com/1.0/camera"/>
 	
 	<plugin name="Compass" value="org.apache.cordova.CompassListener" />
+	<plugin name="Geolocation" value="org.apache.cordova.GeoBroker" />
+
 
     <icon src="icon.png" />
     <icon src="res/icon/android/icon-36-ldpi.png"   gap:platform="android"    gap:density="ldpi" />
