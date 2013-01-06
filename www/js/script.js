@@ -1,28 +1,26 @@
 //Code for toggling the aside tag of the design
-(function(){
-                $(document).ready(function(){
-                    $('#m-aside').css('min-height', $('#page').height());
-                    
-                    $('#m-header button').toggle(function(){
-                        $('#page').animate({
-                            'left': 260
-                        }, 200);
-                        
-                        $('#m-aside').animate({
-                            'left': 0
-                        }, 200);
-                        
-                    }, function(){
-                        $('#page').animate({
-                            'left': 0
-                        }, 200);
-                        
-                        $('#m-aside').animate({
-                            'left': -260
-                        }, 200);
-                    });
-                });
-            })();
+$(document).ready(function(){
+	$('#m-aside').css('min-height', $('#page').height());
+	
+	$('#m-header button').toggle(function(){
+		$('#page').animate({
+			'left': 260
+		}, 200);
+		
+		$('#m-aside').animate({
+			'left': 0
+		}, 200);
+		
+	}, function(){
+		$('#page').animate({
+			'left': 0
+		}, 200);
+		
+		$('#m-aside').animate({
+			'left': -260
+		}, 200);
+	});
+});
 			
 //Start listener for the position coordinates when the device is ready
 document.addEventListener("deviceready", onDeviceReady, false);
