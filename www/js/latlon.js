@@ -67,7 +67,21 @@ function LatLon(lat, lon, rad) {
   return d.toPrecisionFixed(precision);
 }
 
+LatLon.prototype.bearingTo = function(point){
 
+var lat1 = this._lat;
+var lon1 = this._lon;
+var lat2 = point._lat;
+var lon2 = point._lon;
+
+var dLon = lon2 - lon1;
+
+var y = Math.sin(dLon) * Math.cos(lat2);
+var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+var brng = Math.atan2(y, x).toDeg();
+
+return brng;
+}
 
 
 
