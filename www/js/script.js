@@ -109,7 +109,7 @@ function handle_geolocation_query(position) {
     getinfo(dist);
 }		
 function onError(error) {
-//alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+  alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
 }
 function getinfo(dist){
     var htmlPage="";
