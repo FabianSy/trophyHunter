@@ -1,4 +1,10 @@
-﻿.mainTable
+﻿#m-header {
+  height: 30px;
+  background: #9F0;
+  padding: 10px 0;
+  background-image:url('../images/header-bg.jpg');
+}
+.mainTable
 {
 	margin-left:35%; 
 	margin-top:5%
