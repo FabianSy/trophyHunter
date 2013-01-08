@@ -29,6 +29,57 @@ function loadPage(pageName)
 {
 	$('#maincontent').load(pageName);
 }
+
+/////////////////////////////////////////////////////////////////////////
+///////Create New Quest in Amazon DB
+/////////////////////////////////////////////////////////////////////////
+function createQuestScreen(){   
+	navigator.geolocation.getCurrentPosition(show_google_map);  
+}
+
+function createQuest(){
+
+	var name = document.getElementById("questtitle").value;
+	var description = document.getElementById("questdesc").value;
+	var badgePath = document.getElementById("badgePath").value;
+	var radius = document.getElementById("radius").value;
+	var latitude = document.getElementById("LatValue").innerHTML;
+	var longitude = document.getElementById("LongValue").innerHTML;
+
+	simpleCreateQuest(name, description, badgePath, latitude, longitude, radius);
+	
+	document.getElementById("questtitle").value = "";
+	document.getElementById("questdesc").value = "";
+	document.getElementById("badgePath").value = "";
+	document.getElementById("radius").value = "";
+	document.getElementById("LatValue").innerHTML = "";
+	document.getElementById("LongValue").innerHTML = "";
+}  
+
+function show_google_map(position)  {	  
+
+	var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
+						position.coords.longitude + "&zoom=10&size=430x120&markers=color:blue|label:S|" +  
+						position.coords.latitude + ',' + position.coords.longitude;  
+	
+	var html_page ="<img style='' src='"+image_url+"' width='430' height='120'/>";
+	//getlocinfo(position.coords.latitude,position.coords.longitude);
+	
+	html_page = "<div class='phpDiv'>";
+	html_page += "<div><span class='lableText'>Quest Title:&nbsp;</span><input id='questtitle' type='text'/></div>";
+	html_page += "<div><span class='lableText'>Quest Description:&nbsp;</span><input id='questdesc' type='text' /></div>";	
+	html_page += "<div><span class='lableText'>Location Name:&nbsp;</span><input id='cityName' type='text' /></div>";
+	html_page += "<div><span class='lableText'>Latitude:&nbsp;</span><span id='LatValue' class='dataStyle'>" + position.coords.latitude + "</span></div>";
+	html_page += "<div><span class='lableText'>Longitude:&nbsp;</span><span id='LongValue' class='dataStyle'>" + position.coords.longitude + "</span></div>";
+	html_page += "<div><span class='lableText'>Radius:&nbsp;</span><input id='radius' type='text' /></div>";
+	html_page += "<div><span class='lableText'>Badge Path:&nbsp;</span><input id='badgePath' type='text' /></div>";
+	html_page += "</div>";
+	
+	html_page += "<div class='btnDiv' ><a href='javascript:createQuest();' onclick='createQuest()'><img  id='btnconfirm' alt='' src='images/confirm.png' border='0' width='91' height='25' /></a></div>";
+	document.getElementById("maincontent").innerHTML=html_page;	
+	
+} 
+
 /////////////////////////////////////////////////////////////////////////
 ///////Show all quests code in the page
 /////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,7 @@ function simpleCreateQuest(name, description, badgePath, latitude, longitude, ra
 	resource = resource + "&latitude=" + latitude;
 	resource = resource + "&longitude=" + longitude;
 	resource = resource + "&radius=" + radius;
+	webservicePostRequest(resource);
 
 }
 
@@ -63,7 +64,7 @@ function webserviceGetRequest(resource)
 
 function webservicePostRequest(resource)
 {
-	xmlhttp=XMLHttpRequest();
+	xmlhttp = new XMLHttpRequest;
 	if (xmlhttp==null)
 	{
 		alert ("Your browser does not support XMLHTTP!");
