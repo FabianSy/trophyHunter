@@ -65,13 +65,13 @@ function show_google_map(position)  {
 	var html_page ="<img style='' src='"+image_url+"' width='430' height='120'/>";
 	//getlocinfo(position.coords.latitude,position.coords.longitude);
 	
-	html_page = "<div class='phpDiv'>";
+	html_page += "<div class='phpDiv'>";
 	html_page += "<div><span class='lableText'>Quest Title:&nbsp;</span><input id='questtitle' type='text'/></div>";
 	html_page += "<div><span class='lableText'>Quest Description:&nbsp;</span><input id='questdesc' type='text' /></div>";	
 	html_page += "<div><span class='lableText'>Location Name:&nbsp;</span><input id='cityName' type='text' /></div>";
 	html_page += "<div><span class='lableText'>Latitude:&nbsp;</span><span id='LatValue' class='dataStyle'>" + position.coords.latitude + "</span></div>";
 	html_page += "<div><span class='lableText'>Longitude:&nbsp;</span><span id='LongValue' class='dataStyle'>" + position.coords.longitude + "</span></div>";
-	html_page += "<div><span class='lableText'>Radius:&nbsp;</span><input id='radius' type='text' /></div>";
+	html_page += "<div><span class='lableText'>Radius in m:&nbsp;</span><input id='radius' type='text' /></div>";
 	html_page += "<div><span class='lableText'>Badge Path:&nbsp;</span><input id='badgePath' type='text' /></div>";
 	html_page += "</div>";
 	
@@ -97,7 +97,7 @@ function showAllQuests(){
         htmlResult +=  "<div style='height:2px;background: #EDEFF3'>&nbsp;</div>";
         j+=1;
         if (j>4){
-            j=0;
+            j=1;
         }
     } 
     htmlResult +="</div>";
@@ -119,7 +119,7 @@ function showQuest(questName,j){
     htmlPage+="name: "+json.name+"<br/>";
     htmlPage+="targetLocation.name: "+json.targetLocation.name+"<br/>";
     htmlPage+="Coordinates: "+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+"<br/>";
-	htmlPage+="Radius: "+json.targetLocation.radius+"<br/>";
+	htmlPage+="Radius in m: "+json.targetLocation.radius+"<br/>";
     htmlPage+="Badge: <img src='"+json.rewardedBadge.path+"' />";
     htmlPage+="</div></div>";
     htmlPage+="<div class='questbg" + j + "'><center><a href='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");' class='getallquest'>Play</a></center></div>";
@@ -154,7 +154,7 @@ function handle_geolocation_query(position) {
     var p1 = new LatLon(ActLat, ActLong);
     var p2 = new LatLon(Qlat, Qlong);
     var dist = p1.distanceTo(p2); 
-    if(dist < Qrad){
+    if(dist < Qrad * 0.001){ // dist is in km, Qrad in m
 		inRange = true;
     }	
     getinfo(dist);
