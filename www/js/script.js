@@ -34,7 +34,8 @@ function loadPage(pageName)
 ///////Create New Quest in Amazon DB
 /////////////////////////////////////////////////////////////////////////
 function createQuestScreen(){   
-	navigator.geolocation.getCurrentPosition(show_google_map);  
+	var locationOptions = {enableHighAccuracy: true};
+	navigator.geolocation.getCurrentPosition(show_google_map, onError, locationOptions);  
 }
 
 function createQuest(){
@@ -153,7 +154,7 @@ function initiate_geolocation(latpos,longpos, radius) {
     Qlat=latpos;
     Qlong=longpos;
 	Qrad=radius;
-    var locationOptions = { maximumAge: 5000, timeout: 5000, enableHighAccuracy: true  };
+    var locationOptions = { maximumAge: 10000, enableHighAccuracy: true  };
 	var headingOptions = { frequency: 3000 };	
     if(inRange == false){
 		locationWatchID = navigator.geolocation.watchPosition(handle_geolocation_query, onError, locationOptions);
