@@ -204,6 +204,6 @@ function handle_heading(heading) {
     var p1 = new LatLon(ActLat, ActLong);
     var p2 = new LatLon(Qlat, Qlong);
 	var bearing = p1.bearingTo(p2);
-	var direction = heading.magneticHeading - bearing;
+	var direction = bearing - heading.magneticHeading;
 	$('#arrow').rotate(direction);
 }
