@@ -50,6 +50,7 @@ function createQuest(){
 	
 	document.getElementById("questtitle").value = "";
 	document.getElementById("questdesc").value = "";
+	document.getElementById("cityName").value = "";
 	document.getElementById("badgePath").value = "";
 	document.getElementById("radius").value = "";
 	document.getElementById("LatValue").innerHTML = "";
@@ -62,8 +63,7 @@ function show_google_map(position)  {
 						position.coords.longitude + "&zoom=10&size=430x120&markers=color:blue|label:S|" +  
 						position.coords.latitude + ',' + position.coords.longitude;  
 	
-	var html_page ="<img style='' src='"+image_url+"' width='430' height='120'/>";
-	//getlocinfo(position.coords.latitude,position.coords.longitude);
+	var html_page ="<div><img src='"+image_url+"' width='430' height='120'/></div>";
 	
 	html_page += "<div class='phpDiv'>";
 	html_page += "<div><span class='lableText'>Quest Title:&nbsp;</span><input id='questtitle' type='text'/></div>";
@@ -126,6 +126,20 @@ function showQuest(questName,j){
     htmlPage+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:hidden'/></div>";
 	document.getElementById("maincontent").innerHTML=htmlPage;
 }
+///////////////////////////////////////////////////////////////////
+/////return from single quest view. clear watchIDs
+///////////////////////////////////////
+function back(){
+		if(locationWatchID != 0){
+			navigator.geolocation.clearWatch(locationWatchID);
+			locationWatchID=0;
+		}
+		if(headingWatchID != 0){
+			navigator.compass.clearWatch(headingWatchID);
+			headingWatchID=0;	
+		}	
+		showAllQuests();
+}
 ///////////////////////////////////////////////////////////////////////////
 //////////////////////// 4 functions to compute distance and show the result
 /////////////////////////////////////////////
@@ -170,7 +184,10 @@ function getinfo(dist){
         htmlPage+="<center>Quest Solved</center>";
 		document.getElementById("arrow").style.visibility = 'hidden';	
 		navigator.geolocation.clearWatch(locationWatchID);
+		locationWatchID=0;
 		navigator.compass.clearWatch(headingWatchID);
+		headingWatchID=0;
+		inRange = false;
     }
     else{
         htmlPage+="<center>Not there yet. Try to get closer to the target location</center></br>";
