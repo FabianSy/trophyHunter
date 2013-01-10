@@ -41,17 +41,17 @@ function createQuestScreen(){
 function createQuest(){
 
 	var name = document.getElementById("questtitle").value;
-	var description = document.getElementById("questdesc").value;
+	//var description = document.getElementById("questdesc").value;
 	var badgePath = document.getElementById("badgePath").value;
 	var radius = document.getElementById("radius").value;
 	var latitude = document.getElementById("LatValue").innerHTML;
 	var longitude = document.getElementById("LongValue").innerHTML;
 
-	simpleCreateQuest(name, description, badgePath, latitude, longitude, radius);
+	simpleCreateQuest(name, "no description", badgePath, latitude, longitude, radius);
 	
 	document.getElementById("questtitle").value = "";
-	document.getElementById("questdesc").value = "";
-	document.getElementById("cityName").value = "";
+	//document.getElementById("questdesc").value = "";
+	//document.getElementById("cityName").value = "";
 	document.getElementById("badgePath").value = "";
 	document.getElementById("radius").value = "";
 	document.getElementById("LatValue").innerHTML = "";
@@ -68,8 +68,8 @@ function show_google_map(position)  {
 	
 	html_page += "<div class='phpDiv'>";
 	html_page += "<div><span class='lableText'>Quest Title:&nbsp;</span><input id='questtitle' type='text'/></div>";
-	html_page += "<div><span class='lableText'>Quest Description:&nbsp;</span><input id='questdesc' type='text' /></div>";	
-	html_page += "<div><span class='lableText'>Location Name:&nbsp;</span><input id='cityName' type='text' /></div>";
+	//html_page += "<div><span class='lableText'>Quest Description:&nbsp;</span><input id='questdesc' type='text' /></div>";	
+	//html_page += "<div><span class='lableText'>Location Name:&nbsp;</span><input id='cityName' type='text' /></div>";
 	html_page += "<div><span class='lableText'>Latitude:&nbsp;</span><span id='LatValue' class='dataStyle'>" + position.coords.latitude + "</span></div>";
 	html_page += "<div><span class='lableText'>Longitude:&nbsp;</span><span id='LongValue' class='dataStyle'>" + position.coords.longitude + "</span></div>";
 	html_page += "<div><span class='lableText'>Radius in m:&nbsp;</span><input id='radius' type='text' /></div>";
