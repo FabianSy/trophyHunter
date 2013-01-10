@@ -107,6 +107,8 @@ function showAllQuests(){
 ///////////////////////////////////////////////////////////////////
 /////show the quest information in a seperated view
 ///////////////////////////////////////
+var badgePath = "";
+
 function showQuest(questName,j){
     document.getElementById("sidebtn").style.visibility = 'hidden';
     document.getElementById("backbtn").style.visibility = "visible";
@@ -122,6 +124,7 @@ function showQuest(questName,j){
     htmlPage+="Coordinates: "+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+"<br/>";
 	htmlPage+="Radius in m: "+json.targetLocation.radius+"<br/>";
     htmlPage+="Badge: <img src='"+json.rewardedBadge.path+"' />";
+	badgePath = json.rewardedBadge.path
     htmlPage+="</div></div>";
     htmlPage+="<div class='questbg" + j + "'><center><a href='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");' class='getallquest'>Play</a></center></div>";
     htmlPage+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:hidden'/></div>";
@@ -183,6 +186,7 @@ function getinfo(dist){
     htmlPage+="<center>The Distance between your position and the quest position is: "+dist+" KM</center>"
     if(inRange){
         htmlPage+="<center>Quest Solved</center>";
+		htmlPage+=getFacebookButton();
 		document.getElementById("arrow").style.visibility = 'hidden';	
 		navigator.geolocation.clearWatch(locationWatchID);
 		locationWatchID=0;
@@ -196,9 +200,21 @@ function getinfo(dist){
     }
     document.getElementById("showresult").innerHTML=htmlPage;
 }
+///////////////////////////////////////////////////////////////////////////
+//////////////////////// function to create FB button (post to wall)
+/////////////////////////////////////////////
+
+function getFacebookButton(){
+	var buttonHTML = "<center> <a href='https://www.facebook.com/dialog/feed?app_id=367025673393589&";
+		buttonHTML += "link=https://developers.facebook.com/docs/reference/dialogs/&picture=http://fabian.schwittlinsky.de/trophyhunter/";
+		buttonHTML += badgePath;
+		buttonHTML += "&name=Trophy Hunter&caption=Bonn Badge&description=I just got a Bagde in Trophy Hunter, join me!"
+		buttonHTML += "&redirect_uri=https://powerful-depths-8756.herokuapp.com/'>Post on FB Wall</a> </center>"
+	return buttonHTML;
+}
 
 ///////////////////////////////////////////////////////////////////////////
-//////////////////////// 2 functions to compute bearing and rotate arrow
+//////////////////////// function to compute bearing and rotate arrow
 /////////////////////////////////////////////
 function handle_heading(heading) {
     var p1 = new LatLon(ActLat, ActLong);
