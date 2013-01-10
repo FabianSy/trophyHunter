@@ -154,8 +154,8 @@ function initiate_geolocation(latpos,longpos, radius) {
     Qlat=latpos;
     Qlong=longpos;
 	Qrad=radius;
-    var locationOptions = { maximumAge: 10000, enableHighAccuracy: true  };
-	var headingOptions = { frequency: 3000 };	
+    var locationOptions = { maximumAge: 5000, enableHighAccuracy: true  };
+	var headingOptions = { frequency: 1000 };	
     if(inRange == false){
 		locationWatchID = navigator.geolocation.watchPosition(handle_geolocation_query, onError, locationOptions);
 		headingWatchID = navigator.compass.watchHeading(handle_heading, onError, headingOptions)		
