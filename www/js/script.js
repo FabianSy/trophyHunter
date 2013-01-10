@@ -206,7 +206,7 @@ function getinfo(dist){
 
 function getFacebookButton(){
 	var buttonHTML = "<center> <a href='https://www.facebook.com/dialog/feed?app_id=367025673393589&";
-		buttonHTML += "link=https://developers.facebook.com/docs/reference/dialogs/&picture=http://fabian.schwittlinsky.de/trophyhunter/";
+		buttonHTML += "link=https://developers.facebook.com/docs/reference/dialogs/&picture=http://trophyhunterfb.s3-website-eu-west-1.amazonaws.com/TrophyHunter/";
 		buttonHTML += badgePath;
 		buttonHTML += "&name=Trophy Hunter&caption=Bonn Badge&description=I just got a Bagde in Trophy Hunter, join me!"
 		buttonHTML += "&redirect_uri=https://powerful-depths-8756.herokuapp.com/'>Post on FB Wall</a> </center>"
