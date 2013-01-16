@@ -5,7 +5,7 @@ function showAllTours(){
     document.getElementById("sidebtn").style.visibility = 'visible';
     document.getElementById("backbtn").style.visibility = "hidden";
     var json = JSON.parse(getAllTours());
-    var tourArray = json.compositeQuest;
+    var tourArray = json.tour;
     var j =1;
     var htmlResult = "";
     htmlResult +="<div>";
