@@ -49,7 +49,11 @@ function showTour(tourName){
 	htmlContent+="<div class='questbg" + j + "' onclick='javascript:initiate_geolocation_tour();'><center><span class='getallquest'>Play Tour</span></center></div>";
 	htmlContent+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:visible' width='50' height='50' /></div>";
 	
+	//So that the tourSubQuests is always an array even if there is just one object (in which case you iterate over properties rather than objects.)
+	tourSubQuests = [].concat(tourSubQuests);
+	
 	for(var i in tourSubQuests){		
+		//alert(i);
 		var quest = tourSubQuests[i];
 		var jsonQuest = JSON.parse(getQuestByName(quest.name));	
 		htmlContent+="<div id='showresult' style='margin-bottom:5px'></div>";
@@ -57,8 +61,8 @@ function showTour(tourName){
 		htmlContent+="Badge: <img src='"+jsonQuest.rewardedBadge.path+"' style='float:left' width = '" + questImgSize + "' height = '" + questImgSize + "'/>";
 		htmlContent+="Subquest: "+jsonQuest.name+"<br/>";		
     		htmlContent+="Coordinates: "+jsonQuest.targetLocation.center.latitude+" , "+jsonQuest.targetLocation.center.longitude+"<br/>";
-    		latitudes.push(jsonQuest.targetLocation.center.Latitude);
-		longitudes.push(jsonQuest.targetLocation.center.Longitude);
+    		latitudes.push(jsonQuest.targetLocation.center.latitude);
+		longitudes.push(jsonQuest.targetLocation.center.longitude);
 		radii.push(jsonQuest.targetLocation.radius);    		
 		htmlContent+="Radius in m: "+jsonQuest.targetLocation.radius+"<br/>";		
 		htmlContent+="</div>";		
@@ -98,27 +102,23 @@ function find_nearest_target(position) {
 	nearestIndex = -1;
 	ActLat = position.coords.latitude;
 	ActLong = position.coords.longitude;
-	var currentPosition = new LatLon(ActLat, ActLong);
+	var currentPosition = new LatLon(ActLat, ActLong);			
 	
-	
-	for (var i in latitudes){
+	for (var i in latitudes){		
+		//alert(latitudes[i] + " , " + longitudes[i]);
 		var questPosition = new LatLon(latitudes[i], longitudes[i]);
 		var tempDist = currentPosition.distanceTo(questPosition);
+		//alert(tempDist);
 		if(tempDist < distToNearest){
 			distToNearest = tempDist;
 			nearestTarget = i;
 		}		
-	}
-	//ActLat = position.coords.latitude;
-	//ActLong = position.coords.longitude;
-    //var p1 = new LatLon(ActLat, ActLong);
-    //var p2 = new LatLon(Qlat, Qlong);
-    //var dist = p1.distanceTo(p2);
-    if(distToNearest < (radii[nearestIndex] * 0.001)){ // dist is in km, Qrad in m
-	inRange = true;
-    }	
-    getinfo(distToNearest);
-    
+	}	
+	
+	if(distToNearest < (radii[nearestTarget] * 0.001)){ // distToNearest is in km, radii in meters
+		inRange = true;		
+	}	
+	getinfotour(distToNearest);	
 }		
 
 function onTourError(error) {
@@ -156,3 +156,39 @@ function getnearesttargetinfo(dist){
     document.getElementById("showresult").innerHTML=htmlPage;
 }
 
+
+function getinfotour(dist){
+    var htmlPage="";
+    //$("p").width()
+    htmlPage+="<center>The Distance between your position and the quest position is: "+dist+" KM</center>"
+    if(inRange){
+        htmlPage+="<center>Quest Solved</center>";
+		alert("completed"); 
+		addSolvedQuest(completed); //This adds the quest to the list of solved quest
+		htmlPage+=getFacebookButtonTour();
+		document.getElementById("arrow").style.visibility = 'hidden';	
+		navigator.geolocation.clearWatch(locationWatchID);
+		locationWatchID=0;
+		//navigator.compass.clearWatch(headingWatchID);
+		headingWatchID=0;
+		inRange = false;
+    }
+    else{
+        htmlPage+="<center>Not there yet. Try to get closer to the target location</center></br>";
+		document.getElementById("arrow").style.visibility = "visible";			
+    }
+    document.getElementById("showresult").innerHTML=htmlPage;
+}
+///////////////////////////////////////////////////////////////////////////
+//////////////////////// function to create FB button (post to wall)
+/////////////////////////////////////////////
+
+function getFacebookButtonTour(){
+	var buttonHTML = "<center> <a href='https://www.facebook.com/dialog/feed?app_id=367025673393589&";
+		buttonHTML += "link=https://developers.facebook.com/docs/reference/dialogs/&picture=http://trophyhunterfb.s3-website-eu-west-1.amazonaws.com/TrophyHunter/";
+		buttonHTML += badgePath;
+		buttonHTML += "&name=Trophy Hunter&caption=" + questName;
+		buttonHTML += "Badge&description=I just got a Bagde in Trophy Hunter, join me!"
+		buttonHTML += "&redirect_uri=https://powerful-depths-8756.herokuapp.com/'>Post on FB Wall</a> </center>"
+	return buttonHTML;
+}
