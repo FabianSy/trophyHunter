@@ -12,6 +12,7 @@ $('a.pageanimate').click(function(){
                 togglechanged=false;
                 $('#page').animate({left:'0px'});
                 $('#m-aside').animate({left:'-260px'});
+                 $("#createQuest").slideUp("slow");
             }
             else {
                 togglechanged=true;
@@ -29,77 +30,138 @@ function loadPage(pageName)
 {
 	$('#maincontent').load(pageName);
 }
+///show 
+$(document).ready(function(){
+  $("#flipcreatQuest").click(function(){
+    $("#createQuest").slideDown("slow");
+     $("#maincontent").text('');
+    
+  });
+});
 
+////////////////////////////////
+///// to show the clear img inside textbox
+///////////////////////////////
+$(document).ready(function() {
+    $('input.deletable').wrap('<span class="deleteicon" />').after($('<span/>').click(function() {
+        $(this).prev('input').val('').focus();
+    }));
+});
+////////////////////////////////
+///// clear the defualt value of the textbox
+///////////////////////////////
+function changeInputValue(inputId){
+$("#"+inputId).val("");
+}
 /////////////////////////////////////////////////////////////////////////
-///////Create New Quest in Amazon DB
+///////2 functions to get current position coordinates 
+////// and insert then to the html page
 /////////////////////////////////////////////////////////////////////////
-function createQuestScreen(){   
-	var locationOptions = {enableHighAccuracy: true};
-	navigator.geolocation.getCurrentPosition(show_google_map, onError, locationOptions);  
+function createBasicQuest(){ 
+navigator.geolocation.getCurrentPosition(show_lat_lang);
+//var locationOptions = { maximumAge: 5000, enableHighAccuracy: true  };
+//navigator.geolocation.watchPosition(show_lat_lang, onError, locationOptions);
+}
+function show_lat_lang(position)  {
+//map1
+var mapWidth=$("#showmap").width(); 
+var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
+position.coords.longitude + "&zoom=10&size="+mapWidth+"x120&markers=color:blue|label:S|" +  
+position.coords.latitude + ',' + position.coords.longitude;
+//map2
+//var mapme = new google.maps.Map2(document.getElementById("showmap2"));
+//mapme.setCenter(new GLatLng(position.coords.latitude, position.coords.longitude), 12);
+//markpos =position.coords.latitude+ ","+position.coords.longitude;
+//alert(markpos);
+//headMarker = new GMarker(markpos);
+//mapme.addOverlay(headMarker);
+///
+
+document.getElementById("showmap").innerHTML="<img style='' src='"+image_url+"' width='"+mapWidth+"' height='120'/>";
+document.getElementById("latValue").innerHTML=position.coords.latitude;
+document.getElementById("longValue").innerHTML=position.coords.longitude; 
+}
+////////////////////////////////////////////
+//////save the new quest to the online server
+/////////////////////////////////////////////
+function saveQuestInfo()
+{
+
+var questtitle=document.getElementById("questtitle").value;
+questtitle = questtitle.split(' ').join('_'); //replace spaces with underscores
+
+var descText = document.getElementById("descText").value;
+descText=descText.split(' ').join('_'); //replace spaces with underscores
+
+var imgsrc = document.getElementById("badgeImg").getAttribute('src');
+var Qrad =30;
+var latValue = document.getElementById("latValue").innerHTML;
+var longValue = document.getElementById("longValue").innerHTML;
+if(questtitle.length>0){
+    
+///send the data to the Amazon 
+simpleCreateQuest(questtitle, descText, imgsrc, latValue, longValue, Qrad);
+/////clear all data
+document.getElementById("questtitle").value="";
+document.getElementById("descText").value="";
+document.getElementById("latValue").innerHTML="";
+document.getElementById("longValue").innerHTML="";
+$("#createQuest").slideUp(1000);
+$("#maincontent").text('Your Quest has been created successfully :)');
+
+}
+else{
+//alert("Please select a Title for this Quest!");
+$("#maincontent").text('Please select a Title for this Quest!');
+}
 }
 
-function createQuest(){
+var completed ="";
 
-	var name = document.getElementById("questtitle").value;
-	//var description = document.getElementById("questdesc").value;
-	var badgePath = document.getElementById("badgePath").value;
-	var radius = document.getElementById("radius").value;
-	var latitude = document.getElementById("LatValue").innerHTML;
-	var longitude = document.getElementById("LongValue").innerHTML;
-
-	simpleCreateQuest(name, "no description", badgePath, latitude, longitude, radius);
-	
-	document.getElementById("questtitle").value = "";
-	//document.getElementById("questdesc").value = "";
-	//document.getElementById("cityName").value = "";
-	document.getElementById("badgePath").value = "";
-	document.getElementById("radius").value = "";
-	document.getElementById("LatValue").innerHTML = "";
-	document.getElementById("LongValue").innerHTML = "";
-}  
-
-function show_google_map(position)  {	  
-
-	var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
-						position.coords.longitude + "&zoom=10&size=430x120&markers=color:blue|label:S|" +  
-						position.coords.latitude + ',' + position.coords.longitude;  
-	
-	var html_page ="<div><img src='"+image_url+"' width='430' height='120'/></div>";
-	
-	html_page += "<div class='phpDiv'>";
-	html_page += "<div><span class='lableText'>Quest Title:&nbsp;</span><input id='questtitle' type='text'/></div>";
-	//html_page += "<div><span class='lableText'>Quest Description:&nbsp;</span><input id='questdesc' type='text' /></div>";	
-	//html_page += "<div><span class='lableText'>Location Name:&nbsp;</span><input id='cityName' type='text' /></div>";
-	html_page += "<div><span class='lableText'>Latitude:&nbsp;</span><span id='LatValue' class='dataStyle'>" + position.coords.latitude + "</span></div>";
-	html_page += "<div><span class='lableText'>Longitude:&nbsp;</span><span id='LongValue' class='dataStyle'>" + position.coords.longitude + "</span></div>";
-	html_page += "<div><span class='lableText'>Radius in m:&nbsp;</span><input id='radius' type='text' /></div>";
-	html_page += "<div><span class='lableText'>Badge Path:&nbsp;</span><input id='badgePath' type='text' /></div>";
-	html_page += "</div>";
-	
-	html_page += "<div class='btnDiv' ><a href='javascript:createQuest();' onclick='createQuest()'><img  id='btnconfirm' alt='' src='images/confirm.png' border='0' width='91' height='25' /></a></div>";
-	document.getElementById("maincontent").innerHTML=html_page;	
-	
-} 
-
+function isSolved(questname){
+	var solved=false;
+	//alert(questname);
+	for(var i=0;i<localStorage.length;i++){
+		//alert(questname); not working
+		if (questname == localStorage.getItem(localStorage.key(i))){
+			//alert(questname);
+			solved = true;
+			return solved;
+		}
+		else{
+		}
+	}
+	return solved;
+}
 /////////////////////////////////////////////////////////////////////////
 ///////Show all quests code in the page
 /////////////////////////////////////////////////////////////////////////
 function showAllQuests(){
     document.getElementById("sidebtn").style.visibility = 'visible';
     document.getElementById("backbtn").style.visibility = "hidden";
-    var json = JSON.parse(getAllQuests());
-    var questsArray = json.quest;
+    //document.getElementById("sidebtn").style.display  = 'block';
+    //document.getElementById("backbtn").style.display  = "none";
+    var json = JSON.parse(getAllBasicQuests());
+    var questsArray = json.basicQuest;
     var j =1;
     var htmlResult = "";
     htmlResult +="<div>";
     for(var i in questsArray){
+        var DBQName="";
+        var newQName="";
         var quest = questsArray[i];
-        htmlResult +=  "<div id='"+i+"' class='questbg" + j + "'><center><a  class='getallquest' href=javascript:showQuest('" + quest.name + "'," + j + "); >" + quest.name + "</a></center></div>";
-        htmlResult +=  "<div style='height:2px;background: #EDEFF3'>&nbsp;</div>";
-        j+=1;
-        if (j>4){
-            j=1;
-        }
+		//alert(quest.name); works
+		if(!isSolved(quest.name)){
+						//alert('alert');
+                        DBQName=quest.name;
+                        newQName=DBQName.split('_').join(' ');
+			htmlResult +=  "<div id='"+i+"' class='questbg" + j + "' onclick=javascript:showQuest('" + quest.name + "'," + j + ");><center><span class='getallquest'>" + newQName + "</span></center></div>";
+			htmlResult +=  "<div style='height:2px;background: #EDEFF3'>&nbsp;</div>";
+			j+=1;
+			if (j>4){
+                            j=1;
+			}
+		}
     } 
     htmlResult +="</div>";
     document.getElementById("maincontent").innerHTML=htmlResult;  
@@ -112,12 +174,14 @@ var questName = "";
 function showQuest(questName,j){
     document.getElementById("sidebtn").style.visibility = 'hidden';
     document.getElementById("backbtn").style.visibility = "visible";
+ 
+     
     var json = JSON.parse(getQuestByName(questName));
     console.log(json);
-    document.getElementById("sidebtn").style.visibility = 'hidden';
-    document.getElementById("backbtn").style.visibility = "visible";
-	badgePath = json.rewardedBadge.path;
+    badgePath = json.rewardedBadge.path;
 	questName = json.name;
+	completed = questName;
+	//alert(completed); works
     var htmlPage="";        
     htmlPage+="<div id='showresult' style='margin-bottom:5px'></div>";  
     htmlPage+="<div class='questinfobg' style=' height: 150px;'><div style='color:#ffffff;margin:5px'>";
@@ -127,7 +191,7 @@ function showQuest(questName,j){
 	htmlPage+="Radius in m: "+json.targetLocation.radius+"<br/>";
     htmlPage+="Badge: <img src='"+json.rewardedBadge.path+"' />";
     htmlPage+="</div></div>";
-    htmlPage+="<div class='questbg" + j + "'><center><a href='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");' class='getallquest'>Play</a></center></div>";
+    htmlPage+="<div class='questbg" + j + "' onclick='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");'><center><span class='getallquest'>Play</span></center></div>";
     htmlPage+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:hidden'/></div>";
 	document.getElementById("maincontent").innerHTML=htmlPage;
 }
@@ -145,6 +209,16 @@ function back(){
 		}	
 		showAllQuests();
 }
+///////////////////////////////////////////////////////////////////
+///// Save a solved quest in the phone
+///////////////////////////////////////
+function addSolvedQuest(questname){
+	//alert(questname);
+	localStorage.setItem(String.fromCharCode(localStorage.length),questname);
+	
+		
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //////////////////////// 4 functions to compute distance and show the result
 /////////////////////////////////////////////
@@ -187,6 +261,8 @@ function getinfo(dist){
     htmlPage+="<center>The Distance between your position and the quest position is: "+dist+" KM</center>"
     if(inRange){
         htmlPage+="<center>Quest Solved</center>";
+		//alert(completed); works
+		addSolvedQuest(completed); //This adds the quest to the list of solved quest
 		htmlPage+=getFacebookButton();
 		document.getElementById("arrow").style.visibility = 'hidden';	
 		navigator.geolocation.clearWatch(locationWatchID);

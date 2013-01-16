@@ -1,28 +1,51 @@
 function simpleCreateQuest(name, description, badgePath, latitude, longitude, radius)
 {
-
 	var resource = "simpleCreateBasicQuest";
-	resource = resource + "?name=" + name;
-	resource = resource + "&description=" + description;
-	resource = resource + "&badgePath=" + badgePath;
-	resource = resource + "&latitude=" + latitude;
-	resource = resource + "&longitude=" + longitude;
-	resource = resource + "&radius=" + radius;
+	resource += "?name=" + name;
+	resource += "&description=" + description;
+	resource += "&badgePath=" + badgePath;
+	resource += "&latitude=" + latitude;
+	resource += "&longitude=" + longitude;
+	resource += "&radius=" + radius;
 	webservicePostRequest(resource);
+}
 
+//example call: createTour('ABCTour', 'Go_to_Aachen_Bonn_and_Cologne', 'badges/abc.jpg', ['Aachen', 'Bonn', 'Cologne'])
+function createTour(name, description, badgePath, subQuests)
+{
+	var resource = "createTour";
+	resource += "?name=" + name;
+	resource += "&description=" + description;
+	resource += "&badgePath=" + badgePath;
+	for(var i=0;i<subQuests.length;i++){
+		resource += "&subQuests=" + subQuests[i];
+	}
+	webservicePostRequest(resource);
 }
 
 function createBadge(badgeName, path)
 {
 	var resource = "createBadge";
-	resource = resource + "?name=" + badgeName;
-	resource = resource + "&path=" + path;
+	resource += "?name=" + badgeName;
+	resource += "&path=" + path;
 	webservicePostRequest(resource);
 }
 
 function getAllQuests()
 {
 	var resource = "getAllQuests";
+	return webserviceGetRequest(resource);
+}
+
+function getAllBasicQuests()
+{
+	var resource = "getAllBasicQuests";
+	return webserviceGetRequest(resource);
+}
+
+function getAllTours()
+{
+	var resource = "getAllTours";
 	return webserviceGetRequest(resource);
 }
 

@@ -1,4 +1,4 @@
-<html> 
+﻿<html> 
 <head>
  <title>Trophy Hunter</title>
  <meta name="description" content="Trophy Hunter Game"/>
@@ -7,27 +7,45 @@
 <script type="text/javascript" src="phonegap.js"></script>
 <script type="text/javascript" src="js/jquery-latest.js"></script>
 <script type="text/javascript" src="js/jQueryRotateCompressed.2.2.js"></script>
+<script type="text/javascript" src="js/cordova-2.2.0.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="js/tour.js"></script>
 <script type="text/javascript" src="js/rest.js"></script>
 <script type="text/javascript" src="js/filehandling.js"></script>
 
 <script type="text/javascript" src="js/geo-min.js"></script>
 <script type="text/javascript" src="js/latlon.js"></script>
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false" type="text/javascript"></script> 
+
+<script type="text/javascript" charset="utf-8">
+
+
+ </script>
 <body>
         <div id="viewport">
             <aside id="m-aside">
                 <ul>
                 	<li>
-                        <a href="javascript:loadPage('home.html');" class="pageanimate">Home</a>
+                        <a href="javascript:loadPage('home.html');" class="pageanimate" style="text-decoration:none;">Home</a>
                     </li>
 
                     <li>
-                        <a href="javascript:createQuestScreen();" class="pageanimate" >Create Quest</a>
+                        <a id="flipcreatQuest" href="javascript:createBasicQuest();" class="pageanimate" style="text-decoration:none;" >Create Quest</a>
                     </li>
                     
                     <li>
-                        <a href="javascript:showAllQuests();" class="pageanimate">Show All Quests</a>
+                        <a href="javascript:showAllQuests();" class="pageanimate" style="text-decoration:none;">Show All Quests</a>
                     </li>
+                    <li>
+                    	<a href="javascript:createTourScreen();" class="pageanimate">Create Tour</a>
+                    </li>
+                    <li>
+                    	<a href="javascript:showAllTours();" class="pageanimate">Show All Tours</a>
+                    </li>	                    
+                    <li>
+                        <a href="london.html" style="text-decoration:none;">london</a>
+                    </li>                   
                 </ul>
             </aside>
             <div id="page">
@@ -40,9 +58,22 @@
 
 
                 </header>
-                <section id="m-section">
-                <span id="loader"><img src='images/ajax-loader.gif' border='0' class="loaderimg"/></span>
-                  <p id="maincontent">To start the game please navigate from the side-bar</p>
+                <section id="m-section">                  
+				   	<div id="createQuest" style="display:none">	  
+					<div id="showmap" class="createquestDiv" style="height:120px;"></div>
+					<div class='createquestDiv'>					
+					<div style='color:#ffffff;margin:5px; width:100%'>
+					<div style="width:100%"><input id='questtitle' type='text' class='deletable' onclick="changeInputValue('questtitle')" value='Quest Name'></div>
+					<div><input id='descText' type='text' class='deletable' onclick="changeInputValue('descText')" value='Description'></div>
+					<div class="dataDiv">Coordinates:<span id="latValue"></span>,<span id="longValue"></span></div>
+					<div class="dataDiv"><span style="padding-bottom:15px;float:left">Badge: </span><div style=""><img id="badgeImg" src='basicbadges/bonn.jpg' width="50" height="60" /></div></div>
+					</div></div>
+					<div class='savequestDiv' onclick="javascript:saveQuestInfo();"><span class="getallquest">Save</span></div>
+					 </div> 
+				  
+				  <p id="maincontent">To start the game please navigate from the side-bar</p>
+				  
+				  
                    </section>
                 <footer id="m-footer">
                      <center><span class="footertext">Copyrights Tropy Hunter's </span></center>

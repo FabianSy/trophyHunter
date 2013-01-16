@@ -3,14 +3,30 @@ $(document).ready(function(){
 	showAllQuests(json);
 });
 
+function isSolved(questname){
+	var solved=false;
+	for(var i=0;i<localStorage.lenght;i++){
+		if (questname == localStorage.getItem(localStorage.key(i))){
+			solved = true;
+			return solved;
+		}
+		else{
+		}
+	}
+	return solved;
+}
+
 function showAllQuests(json){
 	var questsArray = json.quest;
 	var htmlResult = "";
   
 	for(var i in questsArray){
-    var quest = questsArray[i];
-		htmlResult += "<a href=javascript:showQuest('" + quest.name + "');>" 
+		var quest = questsArray[i];
+		if(!isSolved(quest.name)){
+			htmlResult += "<a href=javascript:showQuest('" + quest.name + "');>" 
 							+ quest.name + "</a></br>";
+		}
+			
 	}  
 	document.getElementById("result").innerHTML=htmlResult;  
 }
