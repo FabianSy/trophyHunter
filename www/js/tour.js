@@ -62,27 +62,3 @@ function selectQuest(questName, i){
 		selectionArray[i] = 'true';	
 	}
 }
-
-/////////////////////////////////////////////////////////////////////////
-///////Show and play tours
-/////////////////////////////////////////////////////////////////////////
-function showAllTours(){
-    document.getElementById("sidebtn").style.visibility = 'visible';
-    document.getElementById("backbtn").style.visibility = "hidden";
-    var json = JSON.parse(getAllTours());
-    var tourArray = json.compositeQuest;
-    var j =1;
-    var htmlResult = "";
-    htmlResult +="<div>";
-    for(var i in tourArray){
-        var tour = tourArray[i];
-        htmlResult +=  "<div id='"+i+"' class='questbg" + j + "'><center><a  class='getallquest' href=javascript:showTour('" + tour.name + "'," + j + "); >" + tour.name + "</a></center></div>";
-        htmlResult +=  "<div style='height:2px;background: #EDEFF3'>&nbsp;</div>";
-        j+=1;
-        if (j>4){
-            j=1;
-        }
-    } 
-    htmlResult +="</div>";
-    document.getElementById("maincontent").innerHTML=htmlResult;  
-}

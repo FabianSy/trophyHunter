@@ -23,6 +23,12 @@ function createTour(name, description, badgePath, subQuests)
 	webservicePostRequest(resource);
 }
 
+function deleteQuest(name){
+	var resource = "deleteQuest";
+	resource += "?name=" + name;
+	webservicePostRequest(resource);	
+}
+
 function createBadge(badgeName, path)
 {
 	var resource = "createBadge";
