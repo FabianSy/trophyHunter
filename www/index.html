@@ -50,18 +50,14 @@
                     </li>                   
                 </ul>
             </aside>
-            <div id="page">
-                <div id="m-header" data-role="header" data-position="fixed">
-                                 
-                <a  href="javascript:;" class="pageanimate"><img id="sidebtn" src="images/setting-icon.png" class="sidebtn"></a>
-                <a  href="javascript:back();"><img id="backbtn" src="images/back_icon.png" class="backbtn" style="visibility:hidden"></a>
-                    <span class="headerText">Trophy Hunter</span>
-                    
-
-
+            <div id="page" data-role="page">
+                <div id="m-header" data-role="header" data-position="fixed">               
+					<a  href="javascript:;" class="pageanimate"><img id="sidebtn" src="images/setting-icon.png" class="sidebtn"></a>
+					<a  href="javascript:back();"><img id="backbtn" src="images/back_icon.png" class="backbtn" style="visibility:hidden"></a>
+						<span class="headerText">Trophy Hunter</span>
                 </div>
-                <section id="m-section">                  
-				   	<div id="createQuest" style="display:none">	  
+                <div id="m-section" data-role="content" data-scroll="true">
+<!-- 				   	<div id="createQuest" style="display:none">	  
 					<div id="showmap" class="createquestDiv" style="height:120px;"></div>
 					<div class='createquestDiv'>					
 					<div style='color:#ffffff;margin:5px; width:100%'>
@@ -71,12 +67,9 @@
 					<div class="dataDiv"><span style="padding-bottom:15px;float:left">Badge: </span><div style=""><img id="badgeImg" src='basicbadges/bonn.jpg' width="50" height="60" /></div></div>
 					</div></div>
 					<div class='savequestDiv' onclick="javascript:saveQuestInfo();"><span class="getallquest">Save</span></div>
-					 </div> 
-				  
-				  <p id="maincontent" data-scroll="true">To start the game please navigate from the side-bar</p>
-				  
-				  
-                </section>
+					 </div>  -->
+				  <p id="maincontent">To start the game please navigate from the side-bar</p>
+                </div>
                 <div id="m-footer" data-role="footer" data-position="fixed">
                      <center><span class="footertext">Copyrights Tropy Hunter's </span></center>
                      <center><span class="footertext"> Developers Team @2012</span></center>
