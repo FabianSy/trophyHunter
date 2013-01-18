@@ -22,52 +22,25 @@
 
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false" type="text/javascript"></script> 
 
-<script type="text/javascript" charset="utf-8">
-
-
- </script>
 <body>
-<!--         <div id="viewport">
-            <aside id="m-aside">
-                <ul>
-                	<li>
-                        <a href="javascript:loadPage('home.html');" class="pageanimate" style="text-decoration:none;">Home</a>
-                    </li>
-
-                    <li>
-                        <a id="flipcreatQuest" href="javascript:createBasicQuest();" class="pageanimate" style="text-decoration:none;" >Create Quest</a>
-                    </li>
-                    
-                    <li>
-                        <a href="javascript:showAllQuests();" class="pageanimate" style="text-decoration:none;">Show All Quests</a>
-                    </li>
-                    <li>
-                    	<a href="javascript:createTourScreen();" class="pageanimate" style="text-decoration:none;">Create Tour</a>
-                    </li>
-                    <li>
-                    	<a href="javascript:showAllTours();" class="pageanimate" style="text-decoration:none;">Show All Tours</a>
-                    </li>	                    
-                    <li>
-                        <a href="london.html" style="text-decoration:none;">london</a>
-                    </li>                   
-                </ul>
-            </aside> -->
-            <div id="page" data-role="page">
-                <div id="m-header" data-role="header" data-position="fixed">               
-					<a  href="javascript:;" class="pageanimate"><img id="sidebtn" src="images/setting-icon.png" class="sidebtn"></a>
-					<a  href="javascript:back();"><img id="backbtn" src="images/back_icon.png" class="backbtn" style="visibility:hidden"></a>
-						<span class="headerText">Trophy Hunter</span>
-                </div>
-                <div id="m-section" data-role="content" data-scroll="true">
-				  <p id="maincontent">To start the game please navigate from the side-bar</p>
-                </div>
-                <div id="m-footer" data-role="footer" data-position="fixed">
-                     <center><span class="footertext">Copyrights Tropy Hunter's </span></center>
-                     <center><span class="footertext"> Developers Team @2012</span></center>
-                </div>
-            </div>
-<!--         </div> -->
+	<div id="mainpage" data-role="page">			
+		<div id="m-header" data-role="header" data-position="fixed">
+			<span class="headerText">Trophy Hunter</span>						
+		</div>
+		<aside id="m-aside">
+			<div id="top-margin"></div>
+			<ul id="button-list" data-role="listview">
+				<li><a href="javascript:loadPage('home.html');">Home</a></li>
+				<li><a href="javascript:createBasicQuest();">Create Quest</a></li>
+				<li><a href="javascript:showAllQuests();">Show All Quests</a></li>
+				<li><a href="javascript:createTourScreen();">Create Tour</a></li>
+				<li><a href="javascript:showAllTours();">Show All Tours</a></li>	                    
+			</ul>	
+		</aside>				
+		<div id="m-section" data-role="content" data-scroll="true">			
+				<p id="maincontent">To start the game please navigate from the side-bar</p>			
+		</div>
+	</div>
 </body> 
-
 
 </html>

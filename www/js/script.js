@@ -1,28 +1,30 @@
-//Code for toggling the aside tag of the design
-var togglechanged=false;
+// //Code for toggling the aside tag of the design
 // (function(){
     // $(document).ready(function(){
+	$(document).bind("pageinit", function(event) {	
 
-// $("div.questbg").click(function () {
-      // $(this).slideUp();
-    // });    
-// $('a.pageanimate').click(function(){    
-        // $('img.pageanimate').click(function(){
-            // if(togglechanged){
-                // togglechanged=false;
-                // $('#page').animate({left:'0px'});
-                // $('#m-aside').animate({left:'-260px'});
-                 // $("#createQuest").slideUp("slow");
-            // }
-            // else {
-                // togglechanged=true;
-                // $("#maincontent").
-                // $('#page').animate({left:'260px'});
-                // $('#m-aside').animate({left:'0px'});
-            // }
-        // });          
-    // });
+		var menuOpen = false;
+		//detect swipeleft
+		$("#mainpage").bind("swipeleft",function(event) {
+			//close menu
+			if(menuOpen) {
+				menuOpen = false;
+				$('#mainpage').animate({left:'0px'});				
+			}
+		});
+		//detect swiperight
+		$("#mainpage").bind("swiperight",function(event) {
+			//open menu
+			if(!menuOpen) {
+				menuOpen = true;
+				$('#mainpage').animate({left:'260px'});
+			}
+		});	
+
+	// });
 // })();
+	});
+
 /////////////////////////////
 ////to load the content of the requested htlm page
 /////////////////////////////
