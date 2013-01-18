@@ -1,28 +1,28 @@
 //Code for toggling the aside tag of the design
 var togglechanged=false;
-(function(){
-    $(document).ready(function(){
+// (function(){
+    // $(document).ready(function(){
 
-$("div.questbg").click(function () {
-      $(this).slideUp();
-    });    
-$('a.pageanimate').click(function(){    
-        //$('img.pageanimate').click(function(){
-            if(togglechanged){
-                togglechanged=false;
-                $('#page').animate({left:'0px'});
-                $('#m-aside').animate({left:'-260px'});
-                 $("#createQuest").slideUp("slow");
-            }
-            else {
-                togglechanged=true;
-                //$("#maincontent").
-                $('#page').animate({left:'260px'});
-                $('#m-aside').animate({left:'0px'});
-            }
-        });          
-    });
-})();
+// $("div.questbg").click(function () {
+      // $(this).slideUp();
+    // });    
+// $('a.pageanimate').click(function(){    
+        // $('img.pageanimate').click(function(){
+            // if(togglechanged){
+                // togglechanged=false;
+                // $('#page').animate({left:'0px'});
+                // $('#m-aside').animate({left:'-260px'});
+                 // $("#createQuest").slideUp("slow");
+            // }
+            // else {
+                // togglechanged=true;
+                // $("#maincontent").
+                // $('#page').animate({left:'260px'});
+                // $('#m-aside').animate({left:'0px'});
+            // }
+        // });          
+    // });
+// })();
 /////////////////////////////
 ////to load the content of the requested htlm page
 /////////////////////////////
