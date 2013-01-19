@@ -11,11 +11,11 @@ function createTourScreen(){
 	selectionArray = new Array(questsArray.length);
     var htmlResult = "";
 	htmlResult += "<div><input id='title' type='text' value='Tour Name'/></div>";
-	htmlResult += "<div><input id='desc' type='text' value='Tour Title'/></div>";	
+	htmlResult += "<div><input id='desc' type='text' value='Tour Description'/></div>";	
 	htmlResult += "<div>Select Quests</div>";	
     for(var i in questsArray){
         var quest = questsArray[i];
-        htmlResult +=  "<a id='"+ i +"' data-role=button data-theme='b' href=javascript:selectQuest(" + i + "); >" + quest.name + "</a>";
+        htmlResult +=  "<a id='"+ i +"' data-role=button data-theme='c' href=javascript:selectQuest(" + i + "); >" + quest.name + "</a>";
     }
 	htmlResult += "<div><a data-role=button data-theme='a' href='javascript:createNewTour();'>Create Tour</a></div>";	
     $('#maincontent').html(htmlResult);
@@ -45,7 +45,7 @@ function createNewTour(){
 		
 		for(var j in selectionArray){
 			selectionArray[j] = 'false';
-			$('#'+i).buttonMarkup({theme : "c"});
+			$('#'+j).buttonMarkup({theme : "c"});
 		}	
 	}
 }
