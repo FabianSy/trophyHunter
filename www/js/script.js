@@ -1,87 +1,67 @@
-// //Code for toggling the aside tag of the design
-// (function(){
-    // $(document).ready(function(){
-	$(document).bind("pageinit", function(event) {	
+//Code for toggling the sidebar
+$(document).bind("pageinit", function(event) {
+	$("#mainpage").bind("swipeleft",closeSidebar);
+	$("#mainpage").bind("swiperight",openSidebar);	
+});
+	
+function openSidebar(){
+	$('#mainpage').animate({left:'260px'});
+}
 
-		var menuOpen = false;
-		//detect swipeleft
-		$("#mainpage").bind("swipeleft",function(event) {
-			//close menu
-			if(menuOpen) {
-				menuOpen = false;
-				$('#mainpage').animate({left:'0px'});				
-			}
-		});
-		//detect swiperight
-		$("#mainpage").bind("swiperight",function(event) {
-			//open menu
-			if(!menuOpen) {
-				menuOpen = true;
-				$('#mainpage').animate({left:'260px'});
-			}
-		});	
+function closeSidebar(){
+	$('#mainpage').animate({left:'0px'});
+}
 
-	// });
-// })();
-	});
+//return from single quest view. clear watchIDs
+function clearWatch(){
+		if(locationWatchID != 0){
+			navigator.geolocation.clearWatch(locationWatchID);
+			locationWatchID=0;
+		}
+		if(headingWatchID != 0){
+			navigator.compass.clearWatch(headingWatchID);
+			headingWatchID=0;	
+		}	
+}
 
 /////////////////////////////
 ////to load the content of the requested htlm page
 /////////////////////////////
 function loadPage(pageName)
 {
-	$('#maincontent').load(pageName);
+	clearWatch();
+	closeSidebar();
+	if(pageName == "home"){
+		$('#maincontent').load("home.html");
+	}else if(pageName == "createQuest"){
+		createBasicQuest();
+	}else if(pageName == "showAllQuests"){
+		showAllQuests();
+	}else if(pageName == "createTour"){
+		createTourScreen();
+	}else if(pageName == "showAllTours"){
+		showAllTours();
+	}
 }
-///show 
-$(document).ready(function(){
-  $("#flipcreatQuest").click(function(){
-    $("#createQuest").slideDown("slow");
-     $("#maincontent").text('');
-    
-  });
-});
 
-////////////////////////////////
-///// to show the clear img inside textbox
-///////////////////////////////
-$(document).ready(function() {
-    $('input.deletable').wrap('<span class="deleteicon" />').after($('<span/>').click(function() {
-        $(this).prev('input').val('').focus();
-    }));
-});
-////////////////////////////////
-///// clear the defualt value of the textbox
-///////////////////////////////
-function changeInputValue(inputId){
-$("#"+inputId).val("");
-}
 /////////////////////////////////////////////////////////////////////////
 ///////2 functions to get current position coordinates 
 ////// and insert then to the html page
 /////////////////////////////////////////////////////////////////////////
-function createBasicQuest(){ 
-navigator.geolocation.getCurrentPosition(show_lat_lang);
-//var locationOptions = { maximumAge: 5000, enableHighAccuracy: true  };
-//navigator.geolocation.watchPosition(show_lat_lang, onError, locationOptions);
+function createBasicQuest(){
+	clearWatch();
+	navigator.geolocation.getCurrentPosition(show_lat_lang);
 }
 function show_lat_lang(position)  {
-//map1
-var mapWidth=$("#showmap").width(); 
-var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
-position.coords.longitude + "&zoom=10&size="+mapWidth+"x120&markers=color:blue|label:S|" +  
-position.coords.latitude + ',' + position.coords.longitude;
-//map2
-//var mapme = new google.maps.Map2(document.getElementById("showmap2"));
-//mapme.setCenter(new GLatLng(position.coords.latitude, position.coords.longitude), 12);
-//markpos =position.coords.latitude+ ","+position.coords.longitude;
-//alert(markpos);
-//headMarker = new GMarker(markpos);
-//mapme.addOverlay(headMarker);
-///
+	//map1
+	var mapWidth=$("#showmap").width(); 
+	var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
+	position.coords.longitude + "&zoom=10&size="+mapWidth+"x120&markers=color:blue|label:S|" +  
+	position.coords.latitude + ',' + position.coords.longitude;
 
-document.getElementById("showmap").innerHTML="<img style='' src='"+image_url+"' width='"+mapWidth+"' height='120'/>";
-document.getElementById("latValue").innerHTML=position.coords.latitude;
-document.getElementById("longValue").innerHTML=position.coords.longitude; 
+	document.getElementById("showmap").innerHTML="<img style='' src='"+image_url+"' width='"+mapWidth+"' height='120'/>";
+	document.getElementById("latValue").innerHTML=position.coords.latitude;
+	document.getElementById("longValue").innerHTML=position.coords.longitude; 
 }
 ////////////////////////////////////////////
 //////save the new quest to the online server
@@ -89,33 +69,31 @@ document.getElementById("longValue").innerHTML=position.coords.longitude;
 function saveQuestInfo()
 {
 
-var questtitle=document.getElementById("questtitle").value;
-questtitle = questtitle.split(' ').join('_'); //replace spaces with underscores
+	var questtitle=document.getElementById("questtitle").value;
+	questtitle = questtitle.split(' ').join('_'); //replace spaces with underscores
 
-var descText = document.getElementById("descText").value;
-descText=descText.split(' ').join('_'); //replace spaces with underscores
+	var descText = document.getElementById("descText").value;
+	descText=descText.split(' ').join('_'); //replace spaces with underscores
 
-var imgsrc = document.getElementById("badgeImg").getAttribute('src');
-var Qrad =30;
-var latValue = document.getElementById("latValue").innerHTML;
-var longValue = document.getElementById("longValue").innerHTML;
-if(questtitle.length>0){
-    
-///send the data to the Amazon 
-simpleCreateQuest(questtitle, descText, imgsrc, latValue, longValue, Qrad);
-/////clear all data
-document.getElementById("questtitle").value="";
-document.getElementById("descText").value="";
-document.getElementById("latValue").innerHTML="";
-document.getElementById("longValue").innerHTML="";
-$("#createQuest").slideUp(1000);
-$("#maincontent").text('Your Quest has been created successfully :)');
-
-}
-else{
-//alert("Please select a Title for this Quest!");
-$("#maincontent").text('Please select a Title for this Quest!');
-}
+	var imgsrc = document.getElementById("badgeImg").getAttribute('src');
+	var Qrad =30;
+	var latValue = document.getElementById("latValue").innerHTML;
+	var longValue = document.getElementById("longValue").innerHTML;
+	if(questtitle.length>0){
+		///send the data to the Amazon 
+		simpleCreateQuest(questtitle, descText, imgsrc, latValue, longValue, Qrad);
+		/////clear all data
+		document.getElementById("questtitle").value="";
+		document.getElementById("descText").value="";
+		document.getElementById("latValue").innerHTML="";
+		document.getElementById("longValue").innerHTML="";
+		$("#createQuest").slideUp(1000);
+		$("#maincontent").text('Your Quest has been created successfully :)');
+	}
+	else{
+		//alert("Please select a Title for this Quest!");
+		$("#maincontent").text('Please select a Title for this Quest!');
+	}
 }
 
 var completed ="";
@@ -139,10 +117,7 @@ function isSolved(questname){
 ///////Show all quests code in the page
 /////////////////////////////////////////////////////////////////////////
 function showAllQuests(){
-    document.getElementById("sidebtn").style.visibility = 'visible';
-    document.getElementById("backbtn").style.visibility = "hidden";
-    //document.getElementById("sidebtn").style.display  = 'block';
-    //document.getElementById("backbtn").style.display  = "none";
+	clearWatch();
     var json = JSON.parse(getAllBasicQuests());
     var questsArray = json.basicQuest;
     var j =1;
@@ -173,11 +148,7 @@ function showAllQuests(){
 ///////////////////////////////////////
 var badgePath = "";
 var questName = "";
-function showQuest(questName,j){
-    document.getElementById("sidebtn").style.visibility = 'hidden';
-    document.getElementById("backbtn").style.visibility = "visible";
- 
-     
+function showQuest(questName,j){     
     var json = JSON.parse(getQuestByName(questName));
     console.log(json);
     badgePath = json.rewardedBadge.path;
@@ -196,20 +167,6 @@ function showQuest(questName,j){
     htmlPage+="<div class='questbg" + j + "' onclick='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");'><center><span class='getallquest'>Play</span></center></div>";
     htmlPage+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:hidden'/></div>";
 	document.getElementById("maincontent").innerHTML=htmlPage;
-}
-///////////////////////////////////////////////////////////////////
-/////return from single quest view. clear watchIDs
-///////////////////////////////////////
-function back(){
-		if(locationWatchID != 0){
-			navigator.geolocation.clearWatch(locationWatchID);
-			locationWatchID=0;
-		}
-		if(headingWatchID != 0){
-			navigator.compass.clearWatch(headingWatchID);
-			headingWatchID=0;	
-		}	
-		showAllQuests();
 }
 ///////////////////////////////////////////////////////////////////
 ///// Save a solved quest in the phone

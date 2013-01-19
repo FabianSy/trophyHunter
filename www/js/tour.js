@@ -6,8 +6,7 @@ var questsArray;
 var selectionArray;
 
 function createTourScreen(){
-    document.getElementById("sidebtn").style.visibility = 'visible';
-    document.getElementById("backbtn").style.visibility = "hidden";
+	clearWatch();
     var json = JSON.parse(getAllBasicQuests());
     questsArray = json.basicQuest;
 	selectionArray = new Array(questsArray.length);

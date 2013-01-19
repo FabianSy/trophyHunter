@@ -2,8 +2,7 @@
 ///////Show and play tours
 /////////////////////////////////////////////////////////////////////////
 function showAllTours(){
-    document.getElementById("sidebtn").style.visibility = 'visible';
-    document.getElementById("backbtn").style.visibility = "hidden";
+	clearWatch();
     var json = JSON.parse(getAllTours());
     var tourArray = json.tour;
     var j =1;
@@ -27,8 +26,6 @@ var latitudes = [];
 var longitudes = [];
 var radii = [];
 function showTour(tourName){
-	document.getElementById("sidebtn").style.visibility = 'hidden';
-	document.getElementById("backbtn").style.visibility = "visible";
 	var htmlContent = "";
 	htmlContent += "<div>"
 	var j = 1;	//CSS class index. Can range only from 1 to 4.
