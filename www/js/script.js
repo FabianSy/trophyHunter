@@ -49,7 +49,8 @@ function loadPage(pageName)
 ////// and insert then to the html page
 /////////////////////////////////////////////////////////////////////////
 function createBasicQuest(){
-	navigator.geolocation.getCurrentPosition(show_lat_lang);
+    var locationOptions = { maximumAge: 5000, enableHighAccuracy: true  };
+	navigator.geolocation.getCurrentPosition(show_lat_lang, onError, locationOptions);
 }
 function show_lat_lang(position)  {
 	//map1
