@@ -49,7 +49,6 @@ function loadPage(pageName)
 ////// and insert then to the html page
 /////////////////////////////////////////////////////////////////////////
 function createBasicQuest(){
-	clearWatch();
 	navigator.geolocation.getCurrentPosition(show_lat_lang);
 }
 function show_lat_lang(position)  {
@@ -117,7 +116,6 @@ function isSolved(questname){
 ///////Show all quests code in the page
 /////////////////////////////////////////////////////////////////////////
 function showAllQuests(){
-	clearWatch();
     var json = JSON.parse(getAllBasicQuests());
     var questsArray = json.basicQuest;
     var j =1;

@@ -6,7 +6,6 @@ var questsArray;
 var selectionArray;
 
 function createTourScreen(){
-	clearWatch();
     var json = JSON.parse(getAllBasicQuests());
     questsArray = json.basicQuest;
 	selectionArray = new Array(questsArray.length);

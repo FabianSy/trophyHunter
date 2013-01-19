@@ -2,7 +2,6 @@
 ///////Show and play tours
 /////////////////////////////////////////////////////////////////////////
 function showAllTours(){
-	clearWatch();
     var json = JSON.parse(getAllTours());
     var tourArray = json.tour;
     var j =1;
