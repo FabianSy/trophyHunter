@@ -32,7 +32,7 @@ function loadPage(pageName)
 	clearWatch();
 	closeSidebar();
 	if(pageName == "home"){
-		$('#maincontent').load("home.html");
+		document.getElementById("maincontent").innerHTML="To start the game please navigate from the side-bar";
 	}else if(pageName == "createQuest"){
 		createBasicQuest();
 	}else if(pageName == "showAllQuests"){
