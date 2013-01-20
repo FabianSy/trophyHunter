@@ -156,7 +156,7 @@ function getinfotour(dist){
     var htmlPage="";
     //$("p").width()	
     htmlPage+="<center>The Distance between your position and the quest position is: "+dist+" KM</center>"
-    if(inRange){		
+    if(inRange){
 		completedQuestFlags[nearestTargetIndex] = 1;
 		completedQuestCount = completedQuestCount+1;
 		

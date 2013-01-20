@@ -233,7 +233,6 @@ function getinfo(dist){
     htmlPage+="<center>The Distance between your position and the quest position is: "+dist+" KM</center>"
     if(inRange){
         htmlPage+="<center>Quest Solved</center>";
-		alert("completed"); 
 		addSolvedQuest(completed); //This adds the quest to the list of solved quest
 		htmlPage+=getFacebookButton();
 		document.getElementById("arrow").style.visibility = 'hidden';	

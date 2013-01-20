@@ -27,7 +27,7 @@ function createNewTour(){
 
 	var name = document.getElementById("title").value;
 	var description = document.getElementById("desc").value;
-	var badgePath = "basicBadges/Bonn.jpg";
+	var badgePath = "basicbadges/Bonn.jpg";
 	var subQuests = new Array();
 	
 	if(name != "Tour Name"){ //Make sure a title was entered
