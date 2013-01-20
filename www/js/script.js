@@ -53,6 +53,20 @@ function createBasicQuest(){
 	navigator.geolocation.getCurrentPosition(show_lat_lang, onError, locationOptions);
 }
 function show_lat_lang(position)  {
+
+	var htmlpage = 	"<div id='createQuest' style='display:none'>";
+	htmlpage +=	"<div id='showmap' style='height:120px;'></div>";
+	htmlpage +=	"<div>";
+	htmlpage +=	"<div style='color:#ffffff;margin:5px; width:100%'>";
+	htmlpage +=	"<div style='width:100%'><input id='questtitle' type='text' onclick='changeInputValue('questtitle')' value='Quest Name'></div>";
+	htmlpage +=	"<div><input id='descText' type='text' onclick='changeInputValue('descText')' value='Description'></div>";
+	htmlpage +=	"<div>Coordinates:<span id='latValue'></span>,<span id='longValue'></span></div>";
+	htmlpage +=	"<div><span style='padding-bottom:15px;float:left'>Badge: </span><div style=''><img id='badgeImg' src='basicbadges/bonn.jpg' width='50' height='60' /></div></div>";
+	htmlpage +=	"</div></div>";
+	htmlpage +=	"<div onclick='javascript:saveQuestInfo();'><span class='getallquest'>Save</span></div>";
+	htmlpage +=	"</div>";
+	$("#maincontent").html(htmlpage);
+
 	//map1
 	var mapWidth=$("#showmap").width(); 
 	var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
