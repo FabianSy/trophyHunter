@@ -18,8 +18,7 @@ function createTourScreen(){
         htmlResult +=  "<a id='"+ i +"' data-role=button data-theme='c' href=javascript:selectQuest(" + i + "); >" + quest.name + "</a>";
     }
 	htmlResult += "<div><a data-role=button data-theme='a' href='javascript:createNewTour();'>Create Tour</a></div>";	
-    $('#maincontent').html(htmlResult);
-	$('#maincontent').trigger('create');
+    updateHTML("maincontent", htmlResult);
 }
 
 //create Tour in amazon server and reset form.

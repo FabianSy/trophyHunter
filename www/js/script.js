@@ -24,6 +24,16 @@ function clearWatch(){
 		}	
 }
 
+////////////////////////////////////////
+//helper functions
+/////////////////////////////////////////
+
+//update inner html of an element
+function updateHTML(element, html){
+    $('#'+element).html(html);
+	$('#'+element).trigger('create');
+}
+
 /////////////////////////////
 ////to load the content of the requested htlm page
 /////////////////////////////
@@ -32,7 +42,7 @@ function loadPage(pageName)
 	clearWatch();
 	closeSidebar();
 	if(pageName == "home"){
-		document.getElementById("maincontent").innerHTML="To start the game please navigate from the side-bar";
+		updateHTML("maincontent", "To start the game please navigate from the side-bar");
 	}else if(pageName == "createQuest"){
 		createBasicQuest();
 	}else if(pageName == "showAllQuests"){
@@ -54,21 +64,21 @@ function createBasicQuest(){
 }
 function show_lat_lang(position)  {
 
-	var htmlpage = 	"<div id='createQuest' style='display:none'>";
-	htmlpage +=	"<div id='showmap' style='height:120px;'></div>";
-	htmlpage +=	"<div>";
+	var htmlpage = 	"<div id='createQuest'>";
+	htmlpage +=	"<div id='showmap' class='createquestDiv' style='height:120px;'></div>";
+	htmlpage +=	"<div class='createquestDiv'>";
 	htmlpage +=	"<div style='color:#ffffff;margin:5px; width:100%'>";
-	htmlpage +=	"<div style='width:100%'><input id='questtitle' type='text' onclick='changeInputValue('questtitle')' value='Quest Name'></div>";
-	htmlpage +=	"<div><input id='descText' type='text' onclick='changeInputValue('descText')' value='Description'></div>";
-	htmlpage +=	"<div>Coordinates:<span id='latValue'></span>,<span id='longValue'></span></div>";
-	htmlpage +=	"<div><span style='padding-bottom:15px;float:left'>Badge: </span><div style=''><img id='badgeImg' src='basicbadges/bonn.jpg' width='50' height='60' /></div></div>";
+	htmlpage +=	"<div><input id='questtitle' type='text' placeholder='Quest Name' data-clear-btn='true' /></div>";
+	htmlpage +=	"<div><input id='descText' type='text' placeholder='Description' data-clear-btn='true' /></div>";
+	htmlpage +=	"<div>Coordinates:<span id='latValue'></span>,<span id='longValue'></span></div><br>";
+	htmlpage +=	"<div><span style='padding-bottom:15px;float:left'>Badge: </span><div><img id='badgeImg' src='basicbadges/bonn.jpg' width='50' height='60' /></div></div>";
 	htmlpage +=	"</div></div>";
-	htmlpage +=	"<div onclick='javascript:saveQuestInfo();'><span class='getallquest'>Save</span></div>";
+	htmlpage +=	"<a data-role=button data-theme='a' href=javascript:saveQuestInfo();>Save</div>";
 	htmlpage +=	"</div>";
-	$("#maincontent").html(htmlpage);
+	updateHTML("maincontent", htmlpage);
 
 	//map1
-	var mapWidth=$("#showmap").width(); 
+	var mapWidth=$("#showmap").width();
 	var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + "," +  
 	position.coords.longitude + "&zoom=10&size="+mapWidth+"x120&markers=color:blue|label:S|" +  
 	position.coords.latitude + ',' + position.coords.longitude;
@@ -140,28 +150,21 @@ function showAllQuests(){
         var DBQName="";
         var newQName="";
         var quest = questsArray[i];
-		//alert(quest.name); works
 		if(!isSolved(quest.name)){
-						//alert('alert');
-                        DBQName=quest.name;
-                        newQName=DBQName.split('_').join(' ');
-			htmlResult +=  "<div id='"+i+"' class='questbg" + j + "' onclick=javascript:showQuest('" + quest.name + "'," + j + ");><center><span class='getallquest'>" + newQName + "</span></center></div>";
-			htmlResult +=  "<div style='height:2px;background: #EDEFF3'>&nbsp;</div>";
-			j+=1;
-			if (j>4){
-                            j=1;
-			}
+			DBQName=quest.name;
+			newQName=DBQName.split('_').join(' ');
+			htmlResult +=  "<a data-role=button data-theme='b' href=javascript:showQuest('" + quest.name + "');>" + newQName + "</a>";
 		}
     } 
     htmlResult +="</div>";
-    document.getElementById("maincontent").innerHTML=htmlResult;  
+    updateHTML("maincontent", htmlResult);
 }
 ///////////////////////////////////////////////////////////////////
 /////show the quest information in a seperated view
 ///////////////////////////////////////
 var badgePath = "";
 var questName = "";
-function showQuest(questName,j){     
+function showQuest(questName){     
     var json = JSON.parse(getQuestByName(questName));
     console.log(json);
     badgePath = json.rewardedBadge.path;
@@ -177,9 +180,9 @@ function showQuest(questName,j){
 	htmlPage+="Radius in m: "+json.targetLocation.radius+"<br/>";
     htmlPage+="Badge: <img src='"+json.rewardedBadge.path+"' />";
     htmlPage+="</div></div>";
-    htmlPage+="<div class='questbg" + j + "' onclick='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");'><center><span class='getallquest'>Play</span></center></div>";
+    htmlPage+="<a data-role=button data-theme='a' href='javascript:initiate_geolocation("+json.targetLocation.center.latitude+","+json.targetLocation.center.longitude+","+json.targetLocation.radius+");'>Play</a>";
     htmlPage+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:hidden'/></div>";
-	document.getElementById("maincontent").innerHTML=htmlPage;
+	updateHTML("maincontent", htmlPage);
 }
 ///////////////////////////////////////////////////////////////////
 ///// Save a solved quest in the phone
@@ -246,19 +249,19 @@ function getinfo(dist){
         htmlPage+="<center>Not there yet. Try to get closer to the target location</center></br>";
 		document.getElementById("arrow").style.visibility = "visible";			
     }
-    document.getElementById("showresult").innerHTML=htmlPage;
+    updateHTML("showresult", htmlPage);
 }
 ///////////////////////////////////////////////////////////////////////////
 //////////////////////// function to create FB button (post to wall)
 /////////////////////////////////////////////
 
 function getFacebookButton(){
-	var buttonHTML = "<center> <a href='https://www.facebook.com/dialog/feed?app_id=367025673393589&";
+	var buttonHTML = "<a data-role=button data-theme='a' href='https://www.facebook.com/dialog/feed?app_id=367025673393589&";
 		buttonHTML += "link=https://developers.facebook.com/docs/reference/dialogs/&picture=http://trophyhunterfb.s3-website-eu-west-1.amazonaws.com/TrophyHunter/";
 		buttonHTML += badgePath;
 		buttonHTML += "&name=Trophy Hunter&caption=" + questName;
 		buttonHTML += "Badge&description=I just got a Bagde in Trophy Hunter, join me!"
-		buttonHTML += "&redirect_uri=https://powerful-depths-8756.herokuapp.com/'>Post on FB Wall</a> </center>"
+		buttonHTML += "&redirect_uri=https://powerful-depths-8756.herokuapp.com/'>Post on FB Wall</a>"
 	return buttonHTML;
 }
 
