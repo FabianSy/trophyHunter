@@ -10,8 +10,8 @@ function createTourScreen(){
     questsArray = json.basicQuest;
 	selectionArray = new Array(questsArray.length);
     var htmlResult = "";
-	htmlResult += "<div><input id='title' type='text' value='Tour Name'/></div>";
-	htmlResult += "<div><input id='desc' type='text' value='Tour Description'/></div>";	
+	htmlResult += "<div><input id='title' type='text' placeholder='Tour Name' data-clear-btn='true'/></div>";
+	htmlResult += "<div><input id='desc' type='text' placeholder='Tour Description' data-clear-btn='true'/></div>";	
 	htmlResult += "<div>Select Quests</div>";	
     for(var i in questsArray){
         var quest = questsArray[i];
