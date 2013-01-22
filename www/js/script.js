@@ -68,8 +68,8 @@ function show_lat_lang(position)  {
 	htmlpage +=	"<div id='showmap' class='createquestDiv' style='height:120px;'></div>";
 	htmlpage +=	"<div class='createquestDiv'>";
 	htmlpage +=	"<div style='color:#ffffff;margin:5px; width:100%'>";
-	htmlpage +=	"<div><input id='questtitle' type='text' placeholder='Quest Name' data-clear-btn='true' /></div>";
-	htmlpage +=	"<div><input id='descText' type='text' placeholder='Description' data-clear-btn='true' /></div>";
+	htmlpage +=	"<div><input id='questtitle' type='text' placeholder='Quest Name' data-clear-btn='true' value='' /></div>";
+	htmlpage +=	"<div><input id='descText' type='text' placeholder='Description' data-clear-btn='true' value='' /></div>";
 	htmlpage +=	"<div>Coordinates:<span id='latValue'></span>,<span id='longValue'></span></div><br>";
 	htmlpage +=	"<div><span style='padding-bottom:15px;float:left'>Badge: </span><div><img id='badgeImg' src='basicbadges/bonn.jpg' width='50' height='60' /></div></div>";
 	htmlpage +=	"</div></div>";

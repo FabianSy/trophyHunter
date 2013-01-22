@@ -9,15 +9,16 @@ function createTourScreen(){
     var json = JSON.parse(getAllBasicQuests());
     questsArray = json.basicQuest;
 	selectionArray = new Array(questsArray.length);
-    var htmlResult = "";
+    var htmlResult = "<div id='createTour'>";
 	htmlResult += "<div><input id='title' type='text' placeholder='Tour Name' data-clear-btn='true'/></div>";
 	htmlResult += "<div><input id='desc' type='text' placeholder='Tour Description' data-clear-btn='true'/></div>";	
-	htmlResult += "<div>Select Quests</div>";	
+	htmlResult += "<div>Select Quests</div>";
     for(var i in questsArray){
         var quest = questsArray[i];
         htmlResult +=  "<a id='"+ i +"' data-role=button data-theme='c' href=javascript:selectQuest(" + i + "); >" + quest.name + "</a>";
     }
 	htmlResult += "<div><a data-role=button data-theme='a' href='javascript:createNewTour();'>Create Tour</a></div>";	
+	htmlResult += "</div>";
     updateHTML("maincontent", htmlResult);
 }
 
@@ -29,7 +30,7 @@ function createNewTour(){
 	var badgePath = "basicbadges/Bonn.jpg";
 	var subQuests = new Array();
 	
-	if(name != "Tour Name"){ //Make sure a title was entered
+	if(name.length > 0){ //Make sure a title was entered
 	
 		for(var j in selectionArray){
 			if(selectionArray[j] == 'true'){
@@ -46,6 +47,11 @@ function createNewTour(){
 			selectionArray[j] = 'false';
 			$('#'+j).buttonMarkup({theme : "c"});
 		}	
+		
+		$("#createTour").slideUp(1000);
+		$("#maincontent").text('Your Tour has been created successfully :)');		
+	}else{
+		$("#maincontent").text('Please select a Title for this Quest!');
 	}
 }
 
