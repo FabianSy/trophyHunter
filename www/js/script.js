@@ -51,8 +51,69 @@ function loadPage(pageName)
 		createTourScreen();
 	}else if(pageName == "showAllTours"){
 		showAllTours();
+	}else if(pageName == "selectPic"){
+		showSelectPic();
 	}
 }
+
+//// debug
+function showSelectPic()
+{
+	navigator.camera.getPicture(uploadPhoto,
+                                        function(message) { alert('get picture failed'); },
+                                        { quality: 50, 
+                                        destinationType: navigator.camera.DestinationType.FILE_URI,
+                                        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY }
+                                        );
+
+}
+
+function uploadPhoto(imageURI) {
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+			window.resolveLocalFileSystemURI(imageURI, onResolveSuccess, fail);
+        }
+
+function onFileSystemSuccess(fileSystem) {
+        //alert(fileSystem.name);
+    }
+
+function onResolveSuccess(fileEntry) {
+        //alert(fileEntry.name);
+		alert(fileEntry.fullPath);
+		
+		var imagePath = fileEntry.fullPath;
+		
+		server = 'http://www.ahmadz.net/scrum/uploader.php';
+        if (server) {
+        	
+            // Specify transfer options
+            var options = new FileUploadOptions();
+            options.fileKey="file";
+            options.fileName=imagePath.substr(imagePath.lastIndexOf('/')+1);
+			alert(options.fileName);
+            options.mimeType="image/jpeg";
+            options.chunkedMode = false;
+
+            // Transfer picture to server
+            var ft = new FileTransfer();
+            ft.upload(imagePath, server, function(r) {
+                alert(imagePath);
+            }, function(error) {
+                alert('error');            	
+            }, options);
+        }
+		
+		
+    }
+
+        function fail(error) {
+            alert('An error has occurred: Code = ' + error.code);
+          //  console.log("upload error source " + error.source);
+          //  console.log("upload error target " + error.target);
+        }
+
+
+////
 
 /////////////////////////////////////////////////////////////////////////
 ///////2 functions to get current position coordinates 
@@ -68,8 +129,8 @@ function show_lat_lang(position)  {
 	htmlpage +=	"<div id='showmap' class='createquestDiv' style='height:120px;'></div>";
 	htmlpage +=	"<div class='createquestDiv'>";
 	htmlpage +=	"<div style='color:#ffffff;margin:5px; width:100%'>";
-	htmlpage +=	"<div><input id='questtitle' type='text' placeholder='Quest Name' data-clear-btn='true' value='' /></div>";
-	htmlpage +=	"<div><input id='descText' type='text' placeholder='Description' data-clear-btn='true' value='' /></div>";
+	htmlpage +=	"<div><input id='questtitle' type='text' placeholder='Quest Name' data-clear-btn='true' /></div>";
+	htmlpage +=	"<div><input id='descText' type='text' placeholder='Description' data-clear-btn='true' /></div>";
 	htmlpage +=	"<div>Coordinates:<span id='latValue'></span>,<span id='longValue'></span></div><br>";
 	htmlpage +=	"<div><span style='padding-bottom:15px;float:left'>Badge: </span><div><img id='badgeImg' src='basicbadges/bonn.jpg' width='50' height='60' /></div></div>";
 	htmlpage +=	"</div></div>";

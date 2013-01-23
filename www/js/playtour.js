@@ -38,7 +38,8 @@ function showTour(displayTourName){
 	var questImgSize = "75";
 	htmlContent += "<div>";
 	
-	htmlContent+="<div id='showresult' style='margin-bottom:5px'></div>";  
+	htmlContent+="<div id='showresult' style='margin-bottom:5px'></div>";
+	htmlContent+="<center><div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:hidden' width='50' height='50' /></div></center>";  
 	htmlContent+="<div class='questinfobg' style=' height: 215px;'><div style='color:#ffffff;margin:5px'>";
 	htmlContent+="Tour Name: "+json.name+"<br/>"; 
 	tourName = json.name;
@@ -47,8 +48,7 @@ function showTour(displayTourName){
 	tourBadge = json.rewardedBadge.path;
 	htmlContent+="</div></div>";
 	htmlContent+="<a id='playButton' data-role=button data-theme='a' href=javascript:initiate_geolocation_tour();>Play Tour</a>";
-	htmlContent+="<a data-role=button data-theme='a' href=javascript:fakeTourCompletion();>Fake a Result</a>";
-	htmlContent+="<div id='showarrow' style='margin-bottom:5px'><img id='arrow' src='images/arrow.png' style='visibility:visible' width='50' height='50' /></div>";
+	htmlContent+="<a data-role=button data-theme='a' href=javascript:fakeTourCompletion();>Fake a Result</a>";	
 	
 	//So that the tourSubQuests is always an array even if there is just one object (in which case you iterate over properties rather than objects.)
 	tourSubQuests = [].concat(tourSubQuests);
@@ -101,10 +101,11 @@ function initiate_geolocation_tour() {
     //Qlat=latpos;
     //Qlong=longpos;
     //Qrad=radius;	
+  	document.getElementById("arrow").style.visibility = 'visible';	
     var locationOptions = { maximumAge: 5000, enableHighAccuracy: true  };
 	var headingOptions = { frequency: 1000 };	
     if(inRange == false){		
-		locationWatchID = navigator.geolocation.watchPosition(find_nearest_target, onTourError, locationOptions);
+		locationWatchID = navigator.geolocation.watchPosition(find_nearest_target2, onTourError, locationOptions);
 		headingWatchID = navigator.compass.watchHeading(handle_tour_heading, onTourError, headingOptions)		
     }
 }
@@ -133,6 +134,34 @@ function find_nearest_target(position) {
 	}	
 	getinfotour(distToNearestTarget);	
 }		
+
+function find_nearest_target2(position) {	
+	distToNearestTarget = 9999;
+	nearestTargetIndex = -1;
+	ActLat = position.coords.latitude;
+	ActLong = position.coords.longitude;
+	//alert(ActLat + ' , ' + ActLong);
+	var currentPosition = new LatLon(ActLat, ActLong);			
+	var distToBoundary = 9999;
+	
+	for (var i in latitudes){		
+		//alert(latitudes[i] + " , " + longitudes[i]);
+		var questPosition = new LatLon(latitudes[i], longitudes[i]);
+		var tempDist = currentPosition.distanceTo(questPosition);
+		var tempDistToBoundary = tempDist - (radii[i]*0.001);
+		
+		if((tempDistToBoundary < distToBoundary) && (completedQuestFlags[i]==0)){	//In case you are within the range of a quest, the dist to boundary will be 0 or negative which is still fine because we want the numerical minuimum.
+			distToNearestTarget = tempDist;
+			distToBoundary = tempDistToBoundary;
+			nearestTargetIndex = i;			
+		}		
+	}	
+	
+	if(distToBoundary <= 0)
+	  inRange = true;
+	
+	getinfotour(distToNearestTarget);	
+}
 
 function onTourError(error) {
   alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
@@ -203,12 +232,12 @@ function getFacebookButtonTour(){
 }
 
 function fakeTourCompletion(){	
-	find_fake_nearest_target();
+	find_fake_nearest_target2();
 	inRange = true;
 	//alert('Completing : ' + nearestTargetIndex + ' of totally : ' + totalQuests);
 	getinfotour(0);
 	if(completedQuestCount < totalQuests){
-		find_fake_nearest_target();
+		find_fake_nearest_target2();
 		inRange = false;
 		getinfotour(distToNearestTarget);
 	}	
@@ -260,4 +289,30 @@ function find_fake_nearest_target() {
 		inRange = true;		
 	}	
 
+}
+
+function find_fake_nearest_target2() {	
+	distToNearestTarget = 9999;
+	nearestTargetIndex = -1;	
+	//alert(ActLat + ' , ' + ActLong);
+	var currentPosition = new LatLon(ActLat, ActLong);			
+	var distToBoundary = 9999;
+	
+	for (var i in latitudes){		
+		//alert(latitudes[i] + " , " + longitudes[i]);
+		var questPosition = new LatLon(latitudes[i], longitudes[i]);
+		var tempDist = currentPosition.distanceTo(questPosition);
+		var tempDistToBoundary = tempDist - (radii[i]*0.001);
+		
+		if((tempDistToBoundary < distToBoundary) && (completedQuestFlags[i]==0)){	//In case you are within the range of a quest, the dist to boundary will be 0 or negative which is still fine because we want the numerical minuimum.
+			distToNearestTarget = tempDist;
+			distToBoundary = tempDistToBoundary;
+			nearestTargetIndex = i;			
+		}		
+	}	
+	
+	if(distToBoundary <= 0)
+	  inRange = true;
+	
+	getinfotour(distToNearestTarget);	
 }
